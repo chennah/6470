@@ -1,0 +1,418 @@
+<html>
+<title>
+New Question
+</title>
+<head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+function init(){
+document.getElementById("answerstyle").addEventListener('change', answerstyle, false);
+document.getElementById("answerstyle").attachEvent('change', answerstyle);
+
+}
+</script>
+
+<style type="text/css">
+#top{
+left: 0px;
+top:0px;
+z-index:100;
+position:fixed;
+display:block;
+background-color:262626;
+height:40px;
+width:100%;
+overflow: hidden;
+color:white;
+}
+.sidebar{
+left:0px;
+top:40px;
+position:fixed;
+display:block;
+background-color:0099E5;
+width:20%;
+bottom:0px;
+}
+
+.main{
+left:300px;
+top:70px;
+position:absolute;
+
+
+display:block;
+font-size:125%;
+}
+select{
+font-family:arial, helvetica, sans-serif;
+font-size:120%;
+}
+ a:link,a:visited{
+font-family:arial, helvetica, sans-serif;
+color:#262626;
+text-decoration:none;
+}
+a:hover,a:active
+{
+text-decoration:underline;
+
+}
+
+.headline{
+overflow: hidden;
+left: 300 px;
+top:125px;
+position:absolute;
+display:block;
+font-size:200%;
+font-family:arial, helvetica, sans-serif;
+color:#262626;
+}
+input[type="text"] {
+	outline: none;
+	padding: 500px;
+	
+	font-family:arial, helvetica, sans-serif;
+	font-size: 13px;
+	color: #333;
+	border: 1px solid #ddd;
+	border-color: #838383;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0px 0px 10px 0px #eee;
+	-moz-box-shadow: inset 0px 0px 10px 0px #eee;
+	box-shadow: inset 0px 0px 10px 0px #eee;
+}
+input[type="text"]:focus {
+	border-color: #0099E5;
+}
+
+#question{
+margin: 2px;
+margin-bottom:40px;
+padding:10px;
+height: 35px;
+width: 100%;
+
+}
+#answer{
+margin: 2px;
+margin-top:10px;
+padding:10px;
+height: 35px;
+width: 100%;
+padding-bottom: 10px;
+}
+#label{
+margin: 2px;
+margin-top:10px;
+padding:10px;
+height: 35px;
+width: 40%;
+padding-bottom: 10px;
+}
+.prompt{
+
+left: 300 px;
+right:100px;
+top:190px;
+position: absolute;
+display: block;
+font-family:arial, helvetica, sans-serif;
+font-size:120%
+overflow:scroll;
+}
+
+#signup,
+#add1,
+#add2{
+	border:1px solid #7d99ca; 
+	-webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;
+	font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; 
+	text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; 
+	text-align: center; color: #FFFFFF; background-color: #0099E5;
+ background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0099E5), color-stop(100%, #006394));
+ background-image: -webkit-linear-gradient(top, #0099E5, #006394);
+ background-image: -moz-linear-gradient(top, #0099E5, #006394);
+ background-image: -ms-linear-gradient(top, #0099E5, #006394);
+ background-image: -o-linear-gradient(top, #0099E5, #006394);
+ background-image: linear-gradient(top, #0099E5, #006394);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0099E5, endColorstr=#006394);
+
+	
+	position:center;
+ }
+</style>
+
+<script>
+function newAnswer()
+{
+var table = document.getElementById("answertable");
+ var rowCount = table.rows.length;
+ var row=table.insertRow(rowCount);
+
+ 			var cell1 = row.insertCell(0);
+ 			var element1 = document.createElement("input");
+ 			element1.type = "image";
+ 			element1.name="remove";
+ 			element1.id="remove";
+ 			
+ 			element1.setAttribute("id", "remove");
+            element1.src="button.jpg";
+            
+            cell1.appendChild(element1);
+            cell1.align = "center";
+            var element = document.getElementById('remove');
+            var title = $(element1).attr("id");
+            
+			$(element1).live('click', function() {
+				var click = $(this).closest('tr');
+				if(!(click.nextAll().length ==0 && click.prevAll().length==1)){
+					table.deleteRow($(this).closest('tr').prevAll().length);
+				}
+			});
+			
+		
+            var cell2 = row.insertCell(1);
+            var element2 = document.createElement("input");
+            element2.type="checkbox";
+            element2.name="correct";
+            cell2.appendChild(element2);
+ 			cell2.align="center";
+
+
+ 			
+            var cell3 = row.insertCell(2);
+            var element3 = document.createElement("input");
+            element3.type = "text";
+            element3.name = "answer";
+            element3.id = "answer";
+            cell3.appendChild(element3);
+            cell3.align="center";
+
+
+            
+            var cell4 = row.insertCell(3);
+            var element4 = document.createElement("input");
+            element4.type = "text";
+            element4.name = "label";
+            element4.id = "label";
+            cell4.appendChild(element4);
+            cell4.align="center";
+
+
+
+}
+</script>
+<script>
+function newAnswer2()
+{
+var table = document.getElementById("answertable2");
+ var rowCount = table.rows.length;
+ var row=table.insertRow(rowCount);
+
+ 			var cell1 = row.insertCell(0);
+ 			var element1 = document.createElement("input");
+ 			element1.type = "image";
+ 			element1.name="remove";
+ 			element1.id="remove";
+ 			
+ 			element1.setAttribute("id", "remove");
+            element1.src="button.jpg";
+            
+            cell1.appendChild(element1);
+            cell1.align = "center";
+            var element = document.getElementById('remove');
+            var title = $(element1).attr("id");
+			$(element1).live('click', function() {
+				var click = $(this).closest('tr');
+				var todel = click.prevAll().length;
+				var tochange = click.nextAll();
+				if(!(click.nextAll().length ==0 && click.prevAll().length==1)){
+					//alert($(this).closest('tr').nextAll()[0].cells[2].innerHTML);
+					table.deleteRow(todel);
+					for(i=0; i<=tochange.length; i++){
+						var arrayOfStr = tochange[i].cells[2].innerHTML.split(")");
+						var num = parseInt(arrayOfStr[0])-1;
+						tochange[i].cells[2].innerHTML=num+")";
+					}
+				}
+				
+			});
+			
+		
+            var cell2 = row.insertCell(1);
+            var element2 = document.createElement("input");
+            element2.type="checkbox";
+            element2.name="correct";
+            cell2.appendChild(element2);
+ 			cell2.align="center";
+			
+			var cell5 = row.insertCell(2);
+			cell5.innerHTML=rowCount+")";
+ 			cell5.align="center";			
+
+ 			
+            var cell3 = row.insertCell(3);
+            var element3 = document.createElement("input");
+            element3.type = "text";
+            element3.name = "answer";
+            element3.id = "answer";
+            cell3.appendChild(element3);
+            cell3.align="center";
+
+
+            
+            var cell4 = row.insertCell(4);
+            var element4 = document.createElement("input");
+            element4.type = "text";
+            element4.name = "label";
+            element4.id = "label";
+            cell4.appendChild(element4);
+            cell4.align="center";
+
+
+
+}
+</script>
+
+<script>
+function answerstyle(){
+	var singleValues = $("#answerstyle").val();
+	if(singleValues=="multiplechoice"){
+		var table = document.getElementById("answertable");
+		var table2 = document.getElementById("answertable2");
+		var button1=document.getElementById("add1");
+		var button2=document.getElementById("add2");
+		$(document).ready(function() {
+			$(table).slideUp(100);
+			$(button1).slideUp(100);
+ 			$(table2).slideDown(1000);
+    		$(button2).slideDown(100);
+ 		 });
+	}
+	else{
+		var table = document.getElementById("answertable");
+		var table2 = document.getElementById("answertable2");
+		var button1=document.getElementById("add1");
+		var button2=document.getElementById("add2");
+		$(document).ready(function() {
+ 			$(table2).slideUp(100);
+ 			$(button2).slideUp(100);
+    		$(table).slideDown(1000);
+    		$(button1).slideDown(100);
+ 		 });
+	}
+}
+</script>
+</head>
+<body onload="init()" style="overflow:hidden;overflow-y:scroll">
+<div id ="top">
+This is where some stuff will go
+</div>
+<div class ="sidebar">
+This is where the nav stuff will go
+</div>
+
+<div class="main" overflow="hidden">
+<a href = "newquestion.html">Home</a>
+<!--<---!<input type="image" src="button.jpg" alt="Submit button">  -->
+<input type="image" src="arrow.jpg">
+<a href = "newquestion.html">Classes</a>
+<input type="image" src="arrow.jpg">
+<a href = "newquestion.html">Module</a>
+</div>
+<div class = "headline">
+Create a Question
+</div>
+<div class = "prompt">
+Prompt: 
+<input name="question" type="text" id="question" >
+<form action="" style ="margin-bottom:40px;">
+Answer Style: 
+<select name="answerstyle" id="answerstyle">
+<option value="freeresponse">Free Response</option>
+<option value="multiplechoice">Multiple Choice</option>
+</select>
+</form>
+<div style="margin-bottom:10px;">Answer Options: </div>
+
+<table id="answertable" width="100%" align="center" style="margin-bottom:20px;font-size:80%;">
+<tr align="center" >
+	<td height="50px">Remove</td>				
+	<td>Correct</td>				
+	<td>Expression</td> 				
+	<td>Label</td>
+</tr>
+<tr style="margin-bottom:20px;">
+  <td align="center"><input type="image" id="remove" name="remove+++" src="button.jpg"></td>
+  <td align="center"><input type="checkbox" name="correct" value="correct"></td>				
+  <td align="center"><input name="question" type="text" id="answer" ></td> 				
+  <td align="center"><input name="question" type="text" id="label" ></td>
+</tr>
+</table>
+<table id="answertable2" width="100%" align="center" style="margin-bottom:20px;font-size:80%; display:none">
+<tr align="center" >
+	<td height="50px">Remove</td>				
+	<td>Correct</td>
+	<td>Option</td>
+	<td>Expression</td> 				
+	<td>Label</td>
+</tr>
+<tr style="margin-bottom:20px;">
+  <td align="center"><input type="image" id="remove2" name="remove2" src="button.jpg"></td>
+  <td align="center"><input type="checkbox" name="correct" value="correct"></td>
+  <td align="center">1)</td>
+  <td align="center"><input name="question" type="text" id="answer" ></td> 				
+  <td align="center"><input name="question" type="text" id="label" ></td>
+</tr>
+</table>
+
+<center>
+<button type="button" id="add1" onclick="newAnswer()">+ Add another answer</button>
+</center>
+<center>
+<button type="button" id="add2" onclick="newAnswer2()" style="display:none">+ Add another answer</button>
+</center>
+<table width="100%" style="margin-bottom:20px;font-size:80%;">
+<tr align="center" >
+	<td height="50px"><button type="button" id="signup" >Timer</button></td>				
+	<td><button type="button" id="signup" >Release</button></td>				
+	<td><button type="button" id="signup" >Save</button></td> 
+</tr>
+</table>
+</div>
+<script>
+$("#remove").click(function() {
+				var click = $(this).closest('tr');
+				if(!(click.nextAll().length ==0 && click.prevAll().length==1)){
+					var place =$(this).closest('tr').prevAll().length;
+					var table = document.getElementById("answertable");
+					table.deleteRow(place);
+				}
+			});
+</script>
+<script>
+$("#remove2").live('click', function() {
+			var click = $(this).closest('tr');
+			var todel = click.prevAll().length;
+			if(!(click.nextAll().length ==0 && click.prevAll().length==1)){
+				var tochange = click.nextAll();
+				//alert($(this).closest('tr').nextAll()[0].cells[2].innerHTML);
+				var table = document.getElementById("answertable2");
+				table.deleteRow(todel);
+				for(i=0; i<=tochange.length; i++){
+					var arrayOfStr = tochange[i].cells[2].innerHTML.split(")");
+					var num = parseInt(arrayOfStr[0])-1;
+					tochange[i].cells[2].innerHTML=num+")";
+				}
+			}
+	});
+			
+</script>
+
+</body>
+
+</html>
