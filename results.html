@@ -1,0 +1,75 @@
+<html>
+<title>
+New Question
+</title>
+<head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+<style type="text/css">
+#top{
+	left: 0px;
+	top:0px;
+	z-index:100;
+	position:fixed;
+	display:block;
+	background-color:262626;
+	height:40px;
+	width:100%;
+	overflow: hidden;
+	color:white;
+}
+
+.sidebar{
+	left:0px;
+	top:40px;
+	position:fixed;
+	display:block;
+	background-color:0099E5;
+	width:20%;
+	bottom:0px;
+}
+
+a:link,a:visited{
+	font-family:arial, helvetica, sans-serif;
+	color:#262626;
+	text-decoration:none;
+}
+
+a:hover,a:active{
+	text-decoration:underline;
+}
+</style>
+</head>
+<body style="overflow:hidden;overflow-y:scroll">
+<div id ="top">
+This is where some stuff will go
+</div>
+<div class ="sidebar">
+This is where the nav stuff will go
+</div>
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
+
+  
