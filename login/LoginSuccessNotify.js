@@ -1,13 +1,13 @@
 $(document).ready(function(){
 
      //get cookie  
-    alert('alert');
-    alert($.cookie('Message_LoginSuccess'));
-    alert($.cookie('Message_LoginSuccess') == 'Success'); 
+    // alert('alert');
+    // alert($.cookie('Message_LoginSuccess'));
+    // alert($.cookie('Message_LoginSuccess') == 'Success'); 
     
     // Check if cookie exists
     if($.cookie('Message_LoginSuccess') == 'Success'){
-        alert('Entered the if block');
+        // alert('Entered the if block');
        
         $('#LoginStatus').html(' <p>Login Succeeded </p>');
         
@@ -15,7 +15,7 @@ $(document).ready(function(){
         
     }
     else if($.cookie('Message_LoginSuccess') == 'Failed'){
-        alert('Entered the else-if block'); 
+        // alert('Entered the else-if block'); 
         
         $('#LoginStatus').html('<p> Login Failed: invalid username and/or password </p>');
         

@@ -3,9 +3,10 @@
 <!-- Include jQuery interpreter -->
 <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
 
-<!-- Handle 'LoginSuccessMessage' Cookie -->
+<!-- Handle Login / Registration cookies -->
 <script src='jquery.cookie.js'> </script>
-<script src='LoginSuccessNotify.js'> </script>
+<script src='login/LoginSuccessNotify.js'> </script>
+<script src='login/RegistrationSuccessNotify.js'> </script>
 
 <style type="text/css">
 body 
@@ -122,11 +123,12 @@ input[type="text"]:focus {
 </div>
 <div class="login1">
 <div class="logintext">
-<form action='authentication.php' method='post'>
+<form action='login/authentication.php' method='post'>	
 Login
-<input name="user" type="text" id="user" value="Username or Email" >
-<input name="password" type="text" id="password" value="Password">
+<input name="user" type="text" id="user" value="Username or Email" />
+<input name="password" type="text" id="password" value="Password" />
 <input type='submit' value='Log in' />
+<div id='LoginStatus'> </div>
 <!--<button type="button" id="login">Log in</button>-->
 </form>
 </div>
@@ -135,10 +137,14 @@ Login
 <div class="login2">
 <div class="logintext">
 Register
-<input name="myname" type="text" id="myname" value="Name" >
-<input name="myusername" type="text" id="myusername" value="Username">
-<input name="mypword" type="text" id="mypword" value="Password">
-<button type="button" id="signup">Sign up!</button>
+<form action='login/registerUser.php' method='post'>
+<input name="myname" type="text" id="myname" value="Name" />
+<!-- <input name="myemail" type="text" id="myemail" value="Email" /> -->
+<input name="myusername" type="text" id="myusername" value="Username" />
+<input name="mypword" type="text" id="mypword" value="Password" />
+<input type="submit" value="signup" />
+<div id='RegistrationAttemptStatus'> </div>
+</form>
 </div>
 </div>
 
