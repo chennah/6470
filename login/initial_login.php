@@ -1,6 +1,6 @@
 <?php
 
-    require 'login_functions.php';
+    require_once 'login_functions.php';
 
     ///********************** FUNCTIONS ************/
     
@@ -46,7 +46,7 @@
         $username           = mysql_real_escape_string($authentication_request['username']);
         $password_hashed    = mysql_real_escape_string($authentication_request['password_hashed']);
         
-        
+        //echo "Username: $username   and password_hashed: $password_hashed <br />";
         
         mysql_select_db($login_database_name, $connection) or die(mysql_error());
         
@@ -70,32 +70,41 @@
         return $valid_Authentication;
         
         
-    }
+    };
+    
 
     ///**********************RUN PROGRAM ********************/
  
     
 function main($connection, $login_database_name, $login_table_name){
 
+    //echo 'about to parse request <br />';
+
     check_Login_Tables($connection, $login_database_name, $login_table_name);
     
-  //  echo 'about to parse request <br />';
+    //echo 'about to parse request <br />';
+  
+    if(check_Already_Logged_In()){
+            remove_Logged_In_Cookie();
+    }
     
     $authentication_request = parse_Authentication_Request();
    
-  //  echo $$authentication_request;
+    //echo $$authentication_request;
    
-  //  echo 'about to validate request <br />';
+    //echo 'about to validate request <br />';
    
     $login_status_valid = validate_Authentication_Request($authentication_request, $connection, $login_database_name, $login_table_name );
     
-  //  echo 'about to check if login worked <br />';
+    //echo 'about to check if login worked <br />';
     
     
     // Redirect and pass cookie giving login attempt result
     // Cookie does not give access, it is simply to inform the user
     if($login_status_valid){
-        setcookie('Message_LoginSuccess', 'Success', time(), '/');
+        setcookie('Message_LoginSuccess', 'Success', time(), '/');      
+        create_Logged_In_Cookie($authentication_request['username'],$connection);
+        
         header('Location:' . $_SERVER['HTTP_REFERER']);
         echo 'Valid login <br />';
         echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
@@ -105,7 +114,7 @@ function main($connection, $login_database_name, $login_table_name){
         header('Location:' . $_SERVER['HTTP_REFERER']);       
         //header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
         
-        echo  'Redirects to: ' . $_SERVER['HTTP_REFERER'] . '<br />';
+        echo 'Redirects to: ' . $_SERVER['HTTP_REFERER'] . '<br />';
         echo 'Failed login <br />';
         echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
     }

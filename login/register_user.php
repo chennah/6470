@@ -122,6 +122,10 @@
         
         check_Login_Tables($connection, $login_database_name, $login_table_name);    
        
+		if(check_Already_Logged_In()){
+            remove_Logged_In_Cookie();
+		}
+	   
         $registration_request = parse_Registration_Request();
         
         $Registration_Message = evaluate_Registration_Request($authentication_request, $connection, $login_database_name, $login_table_name );
@@ -132,13 +136,14 @@
         // Cookie does not give access, it is simply to inform the user
         if($login_status_valid){
             setcookie('Message_RegistrationSuccess', $Registration_Message);
-            header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
+			create_Logged_In_Cookie($registration_request['username'],$connection);
+			header('Location:' . $_SERVER['HTTP_REFERER']);       
             echo "Registration Message: $Registration_Message <br />";
             echo 'Cookie value: ' . $_COOKIE['Message_RegistrationSuccess'] . '<br />'; 
         }
         else{
             setcookie('Message_RegistrationSuccess', $Registration_Message);
-            header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
+			header('Location:' . $_SERVER['HTTP_REFERER']);       
             echo 'Failed registration <br />';
             echo 'Cookie value: ' . $_COOKIE['Message_RegistrationSuccess'] . '<br />'; 
         }
