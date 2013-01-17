@@ -1,20 +1,18 @@
 <html>
+<title>
+Welcome
+</title>
 <head>
-<!-- Include jQuery interpreter -->
-<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
 
-<!-- Handle Login / Registration cookies -->
-<script src='jquery.cookie.js'> </script>
-<script src='login/LoginSuccessNotify.js'> </script>
-<script src='login/RegistrationSuccessNotify.js'> </script>
 
 <style type="text/css">
+
 body 
 {
+overflow:scroll;
 background-image:url("stunning-sunset-17.jpg");
 background-color:#148D14;
-overflow-y:scroll;
-overflow-x:scroll;
+overflow:scroll;
 }
 .top{
 left: 0px;
@@ -24,6 +22,7 @@ display:block;
 background-color:262626;
 height:40px;
 width:100%;
+overflow:scroll;
 }
 .login1{
 -moz-border-radius: 15px;
@@ -119,9 +118,17 @@ input[type="text"]:focus {
  }
 
 </style>
+<!-- Include jQuery interpreter -->
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
+
+<!-- Handle Login / Registration cookies -->
+<script src='jquery.cookie.js'> </script>
+<script src='login/LoginSuccessNotify.js'> </script>
+<script src='login/RegistrationSuccessNotify.js'> </script>
 </head>
-<body style="overflow:auto;">
-<div class ="top">
+<body style="overflow:scroll; overflow-x:scroll;overflow-y:scroll;">
+<img id="the_pic" class="center fit" src="pic.jpg" >  
+<div class ="top" style="overflow:scroll;">
 </div>
 <div class="login1">
 <div class="logintext">
