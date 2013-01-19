@@ -10,18 +10,16 @@ $(document).ready(function(){
         // alert('Entered the if block');
        
         $('#LoginStatus').html(' <p>Login Succeeded </p>');
-        
-        $.removeCookie('Message_LoginSuccess', {path: '/'} );
-        
+                
     }
     else if($.cookie('Message_LoginSuccess') == 'Failed'){
         // alert('Entered the else-if block'); 
         
         $('#LoginStatus').html('<p> Login Failed: invalid username and/or password </p>');
         
-        $.removeCookie('Message_LoginSuccess', {path: '/'} );
-        
     }
+	
+	$.removeCookie('Message_LoginSuccess', {path: '/'} );
 
     
 });

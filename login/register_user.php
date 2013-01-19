@@ -20,7 +20,7 @@
     // *
     // */
     
-    require 'login_functions.php';
+    require_once 'login_functions.php';
     
     ///********************** FUNCTIONS ************/
    function parse_Registration_Request(){
@@ -34,7 +34,7 @@
  
         //Username
         if (isset($_POST["myname"])){    
-           $username = $_POST["myname"];
+           $name = $_POST["myname"];
           // echo $username . '<br />';
         }  
         else { 
@@ -79,12 +79,12 @@
                      'email'            => $email);
     };
 
-    function evaluate_Registration_Request($authentication_request, $connection, $login_database_name, $login_table_name  ) {
+    function evaluate_Registration_Request($registration_request, $connection, $login_database_name, $login_table_name  ) {
         ///*  Returns TRUE / FALSE -- request can be created using 'parse_Authentication_Request' and an HTTP POST ****/
-        $name               = mysql_real_escape_string($authentication_request['name']);
-        $username           = mysql_real_escape_string($authentication_request['username']);
-        $password_hashed    = mysql_real_escape_string($authentication_request['password_hashed']);
-        $email              = mysql_real_escape_string($authentication_request['email']);
+        $name               = mysql_real_escape_string($registration_request['name']);
+        $username           = mysql_real_escape_string($registration_request['username']);
+        $password_hashed    = mysql_real_escape_string($registration_request['password_hashed']);
+        $email              = mysql_real_escape_string($registration_request['email']);
         //Check if user exists
         
         mysql_select_db($login_database_name, $connection) or die(mysql_error());
@@ -97,16 +97,15 @@
        
         if ($user_info) {
             $Registration_Message = 'ExistingUser';     //User already exists!
-            setcookie('Message_RegistrationSuccess_User', "$username");
-            return $valid_Authentication;
         }
         else {
-            mysql_query("INSERT INTO $login_table_name (name, username, password, email, lastLogin) VALUES ($name, '$username', '$password_hashed', '$email', NOW())", $connection) or die(mysql_error());
-            
+            mysql_query("INSERT INTO $login_table_name (name, username, password, email, lastLogin) VALUES ('$name', '$username', '$password_hashed', '$email', NOW())", $connection) or die(mysql_error());
             $Registration_Message = "UserCreated";
             //echo "$username successfully logged in. <br />";
         } 
 
+		
+		setcookie('Message_RegistrationSuccess_User', "$username", time(), '/');
         return $Registration_Message;
         
     }    
@@ -128,25 +127,20 @@
 	   
         $registration_request = parse_Registration_Request();
         
-        $Registration_Message = evaluate_Registration_Request($authentication_request, $connection, $login_database_name, $login_table_name );
+        $Registration_Message = evaluate_Registration_Request($registration_request, $connection, $login_database_name, $login_table_name );
         
         
         
         // Redirect and pass cookie giving login attempt result
         // Cookie does not give access, it is simply to inform the user
-        if($login_status_valid){
-            setcookie('Message_RegistrationSuccess', $Registration_Message);
+
+		setcookie('Message_RegistrationSuccess', $Registration_Message, time(), '/');
+		if($Registration_Message === 'UserCreated'){
 			create_Logged_In_Cookie($registration_request['username'],$connection);
-			header('Location:' . $_SERVER['HTTP_REFERER']);       
-            echo "Registration Message: $Registration_Message <br />";
-            echo 'Cookie value: ' . $_COOKIE['Message_RegistrationSuccess'] . '<br />'; 
-        }
-        else{
-            setcookie('Message_RegistrationSuccess', $Registration_Message);
-			header('Location:' . $_SERVER['HTTP_REFERER']);       
-            echo 'Failed registration <br />';
-            echo 'Cookie value: ' . $_COOKIE['Message_RegistrationSuccess'] . '<br />'; 
-        }
+		}
+		header('Location:' . $_SERVER['HTTP_REFERER']);       
+		echo "Registration Message: $Registration_Message <br />";
+
         
         mysql_close($connection);  
     }
