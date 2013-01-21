@@ -102,7 +102,7 @@ function main($connection, $login_database_name, $login_table_name){
     // Redirect and pass cookie giving login attempt result
     // Cookie does not give access, it is simply to inform the user
     if($login_status_valid){
-        setcookie('Message_LoginSuccess', 'Success', time(), '/');      
+        setcookie('Message_LoginSuccess', 'Success', time()+3600*24, '/');      
         create_Logged_In_Cookie($authentication_request['username'],$connection);
         
         header('Location:' . $_SERVER['HTTP_REFERER']);
@@ -110,7 +110,7 @@ function main($connection, $login_database_name, $login_table_name){
         echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
     }
     else{
-        setcookie('Message_LoginSuccess', 'Failed', time(), '/');
+        setcookie('Message_LoginSuccess', 'Failed', time()+3600*24, '/');
         header('Location:' . $_SERVER['HTTP_REFERER']);       
         //header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
         
