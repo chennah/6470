@@ -105,7 +105,7 @@
         } 
 
 		
-		setcookie('Message_RegistrationSuccess_User', "$username", time(), '/');
+		setcookie('Message_RegistrationSuccess_User', "$username", time()+3600*24, '/');
         return $Registration_Message;
         
     }    
@@ -134,7 +134,7 @@
         // Redirect and pass cookie giving login attempt result
         // Cookie does not give access, it is simply to inform the user
 
-		setcookie('Message_RegistrationSuccess', $Registration_Message, time(), '/');
+		setcookie('Message_RegistrationSuccess', $Registration_Message, time()+3600*24, '/');
 		if($Registration_Message === 'UserCreated'){
 			create_Logged_In_Cookie($registration_request['username'],$connection);
 		}
