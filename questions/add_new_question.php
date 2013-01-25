@@ -44,12 +44,14 @@
         
         $question_request = parse_question_request($questionID, $questions_args_table_name, $connection);
         
-        $prompt             = $question_request['prompt'];
-        $question_type      = $question_request['question_type'];
+        $prompt                 = $question_request['prompt'];
+        $question_type          = $question_request['question_type'];
             
-        $arg_array          = $question_request['arg_array'];
-        $arg_correct_array  = $question_request['arg_correct_array'];
-        $arg_label_array    = $question_request['arg_label_array'];
+        $arg_array              = $question_request['arg_array'];
+
+        $answer_array           = $question_request['answer_array'];
+        $answer_correct_array   = $question_request['answer_correct_array'];
+        $answer_label_array     = $question_request['answer_label_array'];
         
         echo "Prompt: $prompt <br />";
         echo "question_type: $question_type <br />";
@@ -63,7 +65,15 @@
         
         for($i = 0; $i < count($arg_array); $i++){
               
-                mysql_query("INSERT INTO $questions_args_table_name (questionID, argNum, arg, correct, label) VALUES ('$questionID', '$i', '$arg_array[$i]', '$arg_correct_array[$i]', '$arg_label_array[$i]')", $connection) or die(mysql_error());
+                mysql_query("INSERT INTO $questions_args_table_name (questionID, argNum, arg) VALUES ('$questionID', '$i', '$arg_array[$i]')", $connection) or die(mysql_error());
+                
+        }
+        
+        echo "Count of 'answer_array in check_Questions_Table: " . count($answer_array) . '<br />'; 
+
+        for($i = 0; $i < count($answer_array); $i++){
+              
+                mysql_query("INSERT INTO $questions_answers_table_name (questionID, answerNum, answer, correct, label) VALUES ('$questionID', '$i', '$answer_array[$i]', '$answer_correct_array[$i]', '$answer_label_array[$i]')", $connection) or die(mysql_error());
                 
         }
         
@@ -75,29 +85,40 @@
         
         echo "entering 'parse_question_request' <br />";
         
-        $arg_array          = array();
-        $arg_correct_array  = array();
-        $arg_label_array    = array();
+        $arg_array              = array();
         
-        echo "Test arg0:" . $_POST["Arg0"] .  "<br />";
-        echo "Test arg1:" . $_POST["Arg1"] .  "<br />";
-        echo "Test arg2:" . $_POST["Arg2"] .  "<br />";
+        $answer_array           = array();
+        $answer_correct_array   = array();
+        $answer_label_array     = array();
+        
+        //echo "Test arg0:" . $_POST["Arg0"] .  "<br />";
+        //echo "Test arg1:" . $_POST["Arg1"] .  "<br />";
+        //echo "Test arg2:" . $_POST["Arg2"] .  "<br />";
         
         for( $i = 0; isset($_POST['Arg' . ($i)]); $i++) {
             echo "Entering the Arg for-loop in 'parse_question_request' <br />";
             echo 'Arg'          . $i . ' <br />';
         
-            $arg            = $_POST['Arg'          . $i];
+            $arg                = $_POST['Arg'          . $i];
             echo "Arg: $arg <br />";
-            $arg_correct    = $_POST['Arg_Correct'  . $i];
-            $arg_label      = $_POST['Arg_Label'    . $i];
         
             array_push($arg_array,           $arg);
-            //echo "Still going after 1st push <br />";
-            array_push($arg_correct_array,   $arg_correct);
-            //echo "Still going after correct push <br />";
-            array_push($arg_label_array,     $arg_label);
-            //echo "Still going after label push <br />";
+        }
+        
+        for( $i = 0; isset($_POST['Answer' . ($i)]); $i++) {
+            echo "Entering the Answer for-loop in 'parse_question_request' <br />";
+            echo 'Answer'          . $i . ' <br />';
+        
+            $answer                = $_POST['Answer'          . $i];
+            echo "Answer: $answer <br />";
+            
+            $answer             = $_POST['Answer'          . $i];            
+            $answer_correct     = $_POST['Answer_Correct'  . $i];
+            $answer_label       = $_POST['Answer_Label'    . $i];
+        
+            array_push($answer_array,           $answer);
+            array_push($answer_correct_array,   $answer_correct);
+            array_push($answer_label_array,     $answer_label);
         }
         
         
@@ -107,11 +128,12 @@
         
            
           
-        $question_request = array(  'prompt'            => $prompt,
-                                    'question_type'     => $question_type,
-                                    'arg_array'         => $arg_array,
-                                    'arg_correct_array' => $arg_correct_array,
-                                    'arg_label_array'   => $arg_label_array,
+        $question_request = array(  'prompt'                => $prompt,
+                                    'question_type'         => $question_type,
+                                    'arg_array'             => $arg_array,
+                                    'answer_array'          => $answer_array,
+                                    'answer_correct_array'  => $answer_correct_array,
+                                    'answer_label_array'    => $answer_label_array,
         );
             
             return $question_request;
