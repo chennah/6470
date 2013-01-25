@@ -135,8 +135,8 @@ input[type="text"]:focus {
 
 <!-- Handle Login / Registration cookies -->
 <script src='jquery.cookie.js'> </script>
-<script src='login_success_notify.js'> </script>
-<script src='registration_success_notify.js'> </script>
+<script src='login/login_success_notify.js'> </script>
+<script src='login/registration_success_notify.js'> </script>
 </head>
 <body style="background-repeat:no-repeat;overflow:scroll; overflow-x:scroll;overflow-y:scroll;">
 <img id="the_pic" class="center fit" src="pic.jpg" >  
@@ -144,7 +144,7 @@ input[type="text"]:focus {
 </div>
 <div class="login1">
 <div class="logintext">
-<form action='initial_login.php' method='post'>	
+<form action='login/initial_login.php' method='post'>	
 Login
 <input name="user" type="text" id="user" value="Username or Email" />
 <input name="password" type="text" id="password" value="Password" />
@@ -157,7 +157,7 @@ Login
 <div class="login2">
 <div class="logintext">
 Register
-<form action='register_user.php' method='post'>
+<form action='login/register_user.php' method='post'>
 <input name="myname" type="text" id="myname" value="Name" />
 <!-- <input name="myemail" type="text" id="myemail" value="Email" /> -->
 <input name="myusername" type="text" id="myusername" value="Username" />

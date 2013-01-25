@@ -35,7 +35,7 @@
         //Username
         if (isset($_POST["myname"])){    
            $name = $_POST["myname"];
-          // echo $username . '<br />';
+           //echo $username . '<br />';
         }  
         else { 
             //echo 'No POST Request found';
@@ -45,7 +45,7 @@
         //Username
         if (isset($_POST["myusername"])){    
            $username = $_POST["myusername"];
-          // echo $username . '<br />';
+           //echo $username . '<br />';
         }  
         else { 
             //echo 'No POST Request found';
@@ -121,8 +121,8 @@
         
         check_Login_Tables($connection, $login_database_name, $login_table_name);    
        
-		if(check_Already_Logged_In()){
-            remove_Logged_In_Cookie();
+		if(check_Already_Logged_In($connection)){
+            remove_Logged_In_Cookie($connection);
 		}
 	   
         $registration_request = parse_Registration_Request();

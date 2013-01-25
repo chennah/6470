@@ -15,7 +15,7 @@
         //Username
         if (isset($_POST["user"])){    
            $username = $_POST["user"];
-          // echo $username . '<br />';
+           //echo $username . '<br />';
         }  
         else { 
             //echo 'No POST Request found';
@@ -39,8 +39,8 @@
         return array('username'         => $username,
                      'password_hashed'  => $password_hashed);
     };
-    
-    
+
+
     function validate_Authentication_Request($authentication_request, $connection, $login_database_name, $login_table_name  ) {
         ///*  Returns TRUE / FALSE -- request can be created using 'parse_Authentication_Request' and an HTTP POST ****/
         $username           = mysql_real_escape_string($authentication_request['username']);
@@ -76,52 +76,55 @@
     ///**********************RUN PROGRAM ********************/
  
     
-function main($connection, $login_database_name, $login_table_name){
-
-    //echo 'about to parse request <br />';
-
-    check_Login_Tables($connection, $login_database_name, $login_table_name);
+    function main($connection, $login_database_name, $login_table_name){
     
-    //echo 'about to parse request <br />';
-  
-    if(check_Already_Logged_In()){
-            remove_Logged_In_Cookie();
-    }
+        //echo 'about to check login tables <br />';
     
-    $authentication_request = parse_Authentication_Request();
-   
-    //echo $$authentication_request;
-   
-    //echo 'about to validate request <br />';
-   
-    $login_status_valid = validate_Authentication_Request($authentication_request, $connection, $login_database_name, $login_table_name );
-    
-    //echo 'about to check if login worked <br />';
-    
-    
-    // Redirect and pass cookie giving login attempt result
-    // Cookie does not give access, it is simply to inform the user
-    if($login_status_valid){
-        setcookie('Message_LoginSuccess', 'Success', time()+3600*24, '/');      
-        create_Logged_In_Cookie($authentication_request['username'],$connection);
+        check_Login_Tables($connection, $login_database_name, $login_table_name);
         
-        header('Location:' . $_SERVER['HTTP_REFERER']);
-        echo 'Valid login <br />';
-        echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
-    }
-    else{
-        setcookie('Message_LoginSuccess', 'Failed', time()+3600*24, '/');
-        header('Location:' . $_SERVER['HTTP_REFERER']);       
-        //header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
+        //echo 'about to check if already logged in <br />';
+      
+        if(check_Already_Logged_In($connection)){
+                //echo "Already logged in";
+                remove_Logged_In_Cookie();
+        }
         
-        echo 'Redirects to: ' . $_SERVER['HTTP_REFERER'] . '<br />';
-        echo 'Failed login <br />';
-        echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
-    }
-    
-   mysql_close($connection);  
-    
-}
+        //echo 'about to parse request <br />';
+        
+        $authentication_request = parse_Authentication_Request();
+       
+        //print_r($authentication_request);
+       
+        //echo 'about to validate request <br />';
+       
+        $login_status_valid = validate_Authentication_Request($authentication_request, $connection, $login_database_name, $login_table_name );
+        
+        //echo 'about to check if login worked <br />';
+        
+        
+        // Redirect and pass cookie giving login attempt result
+        // Cookie does not give access, it is simply to inform the user
+        if($login_status_valid){
+            setcookie('Message_LoginSuccess', 'Success', time()+3600*24, '/');      
+            create_Logged_In_Cookie($authentication_request['username'],$connection);
+            
+            header('Location:' . $_SERVER['HTTP_REFERER']);
+            echo 'Valid login <br />';
+            echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
+        }
+        else{
+            setcookie('Message_LoginSuccess', 'Failed', time()+3600*24, '/');
+            header('Location:' . $_SERVER['HTTP_REFERER']);       
+            //header('Location: https://egentry.scripts.mit.edu:444/6470_test/index.html');
+            
+            echo 'Redirects to: ' . $_SERVER['HTTP_REFERER'] . '<br />';
+            echo 'Failed login <br />';
+            echo 'Cookie value: ' . $_COOKIE['Message_LoginSuccess'] . '<br />'; 
+        }
+        
+       mysql_close($connection);  
+        
+    };
     
     main($connection, $login_database_name, $login_table_name);
 
