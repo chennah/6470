@@ -34,7 +34,7 @@
     //        
     //    }
 
-    function check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name) {
+    function check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name) {
         /* Checks if login table exists. If login table does not exist, it is created.
         */
         
@@ -55,7 +55,7 @@
                             arg             varchar(255),
                             )";
                             
-        $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_name
+        $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_names
                    (
                    questionID       INT,
                    answerNum        INT,
@@ -87,22 +87,22 @@
         $table_exist = mysql_query("SELECT 1 from $questions_args_table_name");
         if($table_exist !== FALSE)
         {
-            //echo "Table: '$questions_args_table_name' already exists -- tried to CREATE<br />";  
+            echo "Table: '$questions_args_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            //echo "Table: '$questions_args_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            echo "Table: '$questions_args_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_args_table_command, $connection) or die(mysql_error()); 
         }
         
         $table_exist = mysql_query("SELECT 1 from $questions_answers_table_name");
         if($table_exist !== FALSE)
         {
-            //echo "Table: '$questions_answers_table_name' already exists -- tried to CREATE<br />";  
+            echo "Table: '$questions_answers_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            //echo "Table: '$questions_answers_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            echo "Table: '$questions_answers_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_answers_table_command, $connection) or die(mysql_error()); 
         }    
         

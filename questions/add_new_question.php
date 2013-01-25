@@ -4,7 +4,7 @@
     require_once 'questions_functions.php';
     echo "About to write functions of 'add_new_question.php' <br />";
 
-    function create_question($connection, $database_name, $questions_args_table_name, $questions_table_name){
+    function create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name){
        // //requires POST request
        echo "Entering 'create_question' function <br />";
        
@@ -23,7 +23,7 @@
         };
        
          
-        check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name);
+        check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name);
         
         $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name ORDER BY questionID DESC LIMIT 1";
         $old_questionID_resource = mysql_query($mysql_find_questionID_query) or die(mysql_error());
@@ -114,6 +114,7 @@
             
             $answer             = $_POST['Answer'          . $i];            
             $answer_correct     = $_POST['Answer_Correct'  . $i];
+            echo "Answer_correct value: $answer_correct <br />";
             $answer_label       = $_POST['Answer_Label'    . $i];
         
             array_push($answer_array,           $answer);
@@ -144,9 +145,9 @@
     
     echo "About to start main function of 'add_new_question.php' <br />";
     
-    create_question($connection, $database_name, $questions_args_table_name, $questions_table_name);
+    create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name);
     
-    $redirect = TRUE;
+    $redirect = FALSE;
     
     if($redirect === TRUE){
         

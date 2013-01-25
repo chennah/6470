@@ -18,6 +18,8 @@
     mysql_query("DROP TABLE $questions_table_name") or die(mysql_error());
     
     mysql_query("DROP TABLE $questions_args_table_name") or die(mysql_error());
+    
+    mysql_query("DROP TABLE $questions_answers_table_name") or die(mysql_error());
 
     header('Location:' . $_SERVER['HTTP_REFERER']);       
 
