@@ -1,0 +1,61 @@
+<html>
+    <head>
+        
+        <title> New Question </title>
+        
+    </head>
+    
+    <body>
+        <h2> Add Question </h2>
+        <form action='../add_new_question.php' method='post'>
+            
+            <div> Prompt: <input type='text' name='prompt' value='prompt' /></div>
+
+            <div><select name="question_type" />
+                <option value="freeresponse">Free Response</option>
+                <option value="multiplechoice">Multiple Choice</option>
+                </select>
+            </div>
+            
+            
+            <div> Arg0: <input type="text" value='x', name='Arg0' />
+            Correct: <input type='checkbox' name='Arg_Correct0' />
+            Label: <input type='text' value='label0' name='Arg_Label0'></div>
+            
+            <div> Arg1: <input type="text" value='y', name='Arg1' />
+            Correct: <input type='checkbox' name='Arg_Correct1' checked='checked' />
+            Label: <input type='text' value='label1' name='Arg_Label1'></div>
+            
+            <div> Arg2: <input type="text" value='z', name='Arg2' />
+            Correct:    <input type='checkbox' name='Arg_Correct2' />
+            Label:      <input type='text' value='label2' name='Arg_Label2'></div>
+           
+           
+            <div><input type='submit' value='Submit Question'/></div>
+            <div><input type='reset' /></div>
+        </form>
+        
+    
+        <h2> Drop Question Tables </h2>
+        
+        <form action='dropTables.php'>
+            
+            <input type='submit' value='Drop Tables' />
+            
+        </form>
+        
+        <h2> Create Question Tables </h2>
+        
+        <form action='createTables.php'>
+            
+            <input type='submit' value='Create Tables'/>
+            
+        </form>
+        
+        
+    </body>
+    
+    
+    
+    
+</html>
