@@ -1,17 +1,20 @@
 <?php
-    echo 'login_functions <br />';
+    echo 'beginning login_functions file <br />';
     
-    if (is_file('login_HIDDEN.php'))
-        {
-            echo "'is file' appeared to work <br />";
-            include('login_HIDDEN.php');
-        }
-    else
-        {
-            echo "'is file' did not work <br />";
-    
+    //if (is_file('login_HIDDEN.php'))
+    //    {
+    //        //echo "'is file' appeared to work for login_HIDDEN in 'login_functions'<br />";
+    //        //require('login_HIDDEN.php');
+    //    }
+    //else
+    //    {
+    //        //echo "'is file' did not work for login_HIDDEN in 'login_functions' <br />";
+    //
+    //        
+    //    }
+        
+            require_once('login_HIDDEN.php');
             
-        }
         
         
     
@@ -154,15 +157,15 @@
     };
     
     function check_Already_Logged_In($connection){
-        //echo "entering: 'check_Already_Logged_In' <br />";
+        echo "entering: 'check_Already_Logged_In' <br />";
         
         if($_COOKIE['Status_Login_RAND']==''){
-            //echo "Status_Login_RAND does not exist in 'check_Already_Logged_In' <br />";
+            echo "Status_Login_RAND does not exist in 'check_Already_Logged_In' <br />";
             remove_Logged_In_Cookie($connection);
             return FALSE;
         }
         else {
-            //echo "Status_Login_RAND exists in 'check_Already_Logged_In' <br />";
+            echo "Status_Login_RAND exists in 'check_Already_Logged_In' <br />";
 
             
             $login_Rand     = mysql_real_escape_string($_COOKIE['Status_Login_RAND']);
@@ -176,14 +179,14 @@
             //echo 'get passed the suspect query? <br />';
     
             if(is_resource($sql_result) && mysql_num_rows($sql_result) > 0 ){
-                //echo 'Found match in table <br />';
+                echo 'Found match in table <br />';
                 //logged in, with valid credentials
                 remove_Logged_In_Cookie($connection);
                 create_Logged_In_Cookie($username_raw, $connection);
                 return TRUE;
             }
             else{
-                //echo 'Found no match in table <br />';
+                echo 'Found no match in table <br />';
                 //Invalid cookie random number -- indicates potential client-side tampering
                 //Delete all valid cookies of that user -- but note: this might cause issues if user is logged in on multiple instances
                 
@@ -198,19 +201,19 @@
         }
     };
     
-    //function get_Current_User($connection){
-        //returns '' if not logged in. Later we could actually throw + catch exceptions?
-        //
-        //$current_User = '';
-        //
-        //if(check_Already_Logged_In($connection)){
-        //    
-        //    $current_User = $_COOKIE['Status_Login_Username'];
-        //            
-        //};
-        //
-        //return $current_User;
-    //};
+    function get_current_username($connection){
+       // returns '' if not logged in. Later we could actually throw + catch exceptions?
+        
+        $current_User = '';
+        
+        if(check_Already_Logged_In($connection)){
+            
+            $current_User = $_COOKIE['Status_Login_Username'];
+                    
+        };
+        
+        return $current_User;
+    };
 
     
     

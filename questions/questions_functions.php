@@ -109,9 +109,79 @@
     };
     
     
-    function get_active_questions($connection, $database_name, $questions_table_name ){
-    
+    function get_active_question_questionID($connection, $questions_table_name, $classID ){
+        
+        //$mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name WHERE classID='$classID' ORDER BY activeNum ASC LIMIT 1";
+ 
+        
+        $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name WHERE classID='$classID' ORDER BY activeNum ASC LIMIT 1";
+        
+        $questionID_resource = mysql_query($mysql_find_questionID_query) or die(mysql_error());   
+        $questionID = mysql_fetch_assoc($questionID_resource)[questionID];
+
+        return $questionID;
+        
     };
+    
+    function get_question_info($connection, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $classID, $questionID ){
+        
+        $mysql_find_prompt_query = "SELECT prompt FROM $questions_table_name WHERE classID='$classID' AND questionID='$questionID'";
+        //echo         $mysql_find_prompt_query . '<br />';
+        $prompt_resource = mysql_query($mysql_find_prompt_query, $connection) or die(mysql_error());
+        $prompt= mysql_fetch_array($prompt_resource)['prompt'];
+
+        echo "prompt (inside get_question_info): $prompt <br />";
+        
+        $mysql_find_question_type_query = "SELECT questionType FROM $questions_table_name WHERE classID='$classID' AND questionID='$questionID'";
+        echo         $mysql_find_question_type_query . '<br />';
+        $question_type_resource = mysql_query($mysql_find_question_type_query, $connection) or die(mysql_error());
+        $question_type= mysql_fetch_array($question_type_resource)['questionType'];
+        
+        echo "questionType (inside get_question_info): $questionType <br />";
+        
+        //Parse answer information 
+        $mysql_find_answers_query = "SELECT * FROM $questions_answers_table_name WHERE questionID='$questionID' ";
+        echo         $mysql_find_answers_query . '<br />';
+        $answers_resource = mysql_query($mysql_find_answers_query, $connection) or die(mysql_error());
+        
+        $answer_array = array();
+        $answer_label_array = array();
+        $answer_correct_array = array();
+        
+        
+        while($row = mysql_fetch_array($answers_resource)){
+            array_push($answer_array, $row['answer']);
+            array_push($answer_label_array, $row['label']);
+            array_push($answer_correct_array, $row['correct']);
+           
+        }
+        
+        
+        //Parse argument information 
+        $mysql_find_args_query = "SELECT * FROM $questions_args_table_name WHERE questionID='$questionID' ";
+        echo         $mysql_find_args_query . '<br />';
+        $args_resource = mysql_query($mysql_find_args_query, $connection) or die(mysql_error());
+        
+        $arg_array= array();
+        
+        
+        while($row = mysql_fetch_array($args_resource)){
+            array_push($arg_array, $row['arg']);
+        }
+        
+        
+        $question_info    = array(  'prompt'                => $prompt,
+                                    'question_type'         => $question_type,
+                                    'arg_array'             => $arg_array,
+                                    'answer_array'          => $answer_array,
+                                    'answer_correct_array'  => $answer_correct_array,
+                                    'answer_label_array'    => $answer_label_array,
+        );
+        
+        return $question_info;
+
+        
+    }
     
 
 ?>
