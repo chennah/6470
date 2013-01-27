@@ -33,8 +33,16 @@
     //
     //        
     //    }
+    
+    
+            /////* INFORMATION ABOUT TABLES */////
+    $questions_responses_table_name = 'questions_responses';
+    
+    
+    
+    /////******************* FUNCTIONS *****************/////
 
-    function check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name) {
+    function check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $questions_responses_table_name) {
         /* Checks if login table exists. If login table does not exist, it is created.
         */
         
@@ -55,14 +63,23 @@
                             arg             varchar(255),
                             )";
                             
-        $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_names
+        $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_name
                    (
                    questionID       INT,
                    answerNum        INT,
                    answer           varchar(255),
                    correct          INT,
                    label            varchar(255)
-                   )";                   
+                   )";
+                   
+        $create_questions_responses_table_command = "CREATE TABLE $questions_responses_table_name
+                   (
+                   questionID       INT,
+                   username         varchar(255),
+                   response         varchar(255),
+                   responseNum      INT
+                   )"; 
+                   
         
         echo "Can I connect to the database? : $database_name <br /> ";
         
@@ -104,7 +121,18 @@
         {
             echo "Table: '$questions_answers_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_answers_table_command, $connection) or die(mysql_error()); 
-        }    
+        }
+        
+        $table_exist = mysql_query("SELECT 1 from $questions_responses_table_name");
+        if($table_exist !== FALSE)
+        {
+            echo "Table: '$questions_responses_table_name' already exists -- tried to CREATE<br />";  
+        }
+        else
+        {
+            echo "Table: '$questions_responses_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            mysql_query($create_questions_responses_table_command, $connection) or die(mysql_error()); 
+        }   
         
     };
     
@@ -183,5 +211,6 @@
         
     }
     
+    check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $questions_responses_table_name);
 
 ?>

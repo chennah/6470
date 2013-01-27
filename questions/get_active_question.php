@@ -23,7 +23,30 @@
         return $current_class;
     };
     
-    function get_html_form($prompt, $arg_array, $answer_array, $question_type){
+    function build_submit_success_message(){
+        
+        $message_raw  = '';
+        $message_html = '';
+        
+        if(isset($_COOKIE["submit_success_message"])){
+            
+            $message_raw = $_COOKIE["submit_success_message"];
+            
+            $message_html = "<h4> Previous Submission Status: </h4>" . " $message_raw ";
+            
+            
+            
+            setcookie("submit_success_message", "", time()-3600);
+            
+            
+        }
+        
+        return $message_html;
+        
+        
+    }
+    
+    function get_html_form($prompt, $arg_array, $answer_array, $question_type, $questionID){
         
         ///**************Prepare HTML code if Free Response********************//
 
@@ -103,9 +126,12 @@ EOF;
         }
         
         
-        $question_type_hidden = "<input type='hidden' value='$question_type' />";
-        
-            ///****************Wrap it all together*******************//
+        $question_type_hidden   = "<input type='hidden' name='question_type' value='$question_type' />";
+        $questionID_hidden      = "<input type='hidden' name='questionID' value='$questionID' />";
+
+        $submit_message = build_submit_success_message();   
+            
+            //****************Wrap it all together*******************//
                     
         $html_temp = <<< EOF
             <html>
@@ -120,9 +146,11 @@ EOF;
                 <h4>Prompt: </h4>
                 <p> $prompt <p>
                 
-                <form action='submit_answer.php' method='POST' >
+                <form action='submit_response.php' method='POST' >
                     
                     $question_type_hidden
+                    
+                    $questionID_hidden
                 
                     $Free_Response
                 
@@ -132,6 +160,8 @@ EOF;
                     <input type='reset' />
                     
                 </form>
+                
+                $submit_message
                 
             </body>
             
@@ -170,7 +200,7 @@ EOF;
     
     print_r($question_info);
     
-    $html = get_html_form($prompt, $arg_array, $answer_array, $question_type);
+    $html = get_html_form($prompt, $arg_array, $answer_array, $question_type, $current_questionID);
     
     echo $html;
     

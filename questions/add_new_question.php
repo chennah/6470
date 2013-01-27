@@ -22,9 +22,7 @@
             return;
         };
        
-         
-        check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name);
-        
+                 
         $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name ORDER BY questionID DESC LIMIT 1";
         $old_questionID_resource = mysql_query($mysql_find_questionID_query) or die(mysql_error());
         $old_questionID = mysql_fetch_assoc($old_questionID_resource)[questionID];
