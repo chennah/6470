@@ -5,23 +5,6 @@
     // Get the current class (default '1234' if not in get request)
     require_once 'questions_functions.php';
     
-    function get_current_classID($connection){
-        
-        $current_class = 0;
-        
-        if(isset($_GET['classID'])){
-            
-            $current_class = $_GET['classID'];
-            
-        }
-        else{
-            
-            $current_class = 1234;
-            
-        }
-        
-        return $current_class;
-    };
     
     function build_submit_success_message(){
         
@@ -174,7 +157,7 @@ EOF;
 
     
     
-    $current_classID    = get_current_classID($connection);
+    $current_classID    = get_current_classID();
     
     $current_user       = get_current_username($connection);
     

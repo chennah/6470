@@ -9,18 +9,13 @@
        echo "Entering 'create_question' function <br />";
        
         
-       // $current_User = get_Current_User($connection);
-       // $current_Class = get_Current_Class($connection);
-       
-        $current_User = 'testusr';
-        $current_Class = 1234;
+       $current_User  = get_current_username($connection)       // default: ''
+       $current_Class = get_current_classID();                  // default: 1234
         
        
-        
         if($current_User === ''){
-            echo 'Not Logged In';
-            return;
-        };
+            $current_User = 'testusr';
+            };
        
                  
         $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name ORDER BY questionID DESC LIMIT 1";
@@ -63,7 +58,7 @@
         
         for($i = 0; $i < count($arg_array); $i++){
               
-                mysql_query("INSERT INTO $questions_args_table_name (questionID, argNum, arg) VALUES ('$questionID', '$i', '$arg_array[$i]')", $connection) or die(mysql_error());
+                mysql_query("INSERT INTO $questions_args_table_name (questionID, classID, argNum, arg) VALUES ('$questionID', '$current_Class', '$i', '$arg_array[$i]')", $connection) or die(mysql_error());
                 
         }
         
@@ -71,7 +66,7 @@
 
         for($i = 0; $i < count($answer_array); $i++){
               
-                mysql_query("INSERT INTO $questions_answers_table_name (questionID, answerNum, answer, correct, label) VALUES ('$questionID', '$i', '$answer_array[$i]', '$answer_correct_array[$i]', '$answer_label_array[$i]')", $connection) or die(mysql_error());
+                mysql_query("INSERT INTO $questions_answers_table_name (questionID, classID, answerNum, answer, correct, label) VALUES ('$questionID', '$current_Class', '$i', '$answer_array[$i]', '$answer_correct_array[$i]', '$answer_label_array[$i]')", $connection) or die(mysql_error());
                 
         }
         

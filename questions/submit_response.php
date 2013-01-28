@@ -5,7 +5,9 @@
     
     function parse_and_add_response_request($connection, $questions_responses_table_name){
         
+        //default values
         $questionID  = 0;
+        $classID     = 1234;
         $username    = '';
         $response    = '';
         $responseNum = '';
@@ -16,8 +18,10 @@
             
         }
         else{
-            
+            //throw exception? If we can't find the correct questionID, the submission is useless.
         }
+        
+        $classID = get_current_classID();
         
         $tmpUser = get_current_username($connection);
         if($tmpUser!==''){
@@ -49,6 +53,8 @@
         
         
         
+        
+        
         $response_info    = array(  'questionID'            => $questionID,
                                     'username'              => $username,
                                     'response'              => $response,
@@ -56,7 +62,7 @@
         );
         
         //////Insert response -- overwrite previous responses from user for that question
-            $submitted_responses_query = "SELECT * FROM $questions_responses_table_name WHERE username='$username' and questionID='$questionID'";
+            $submitted_responses_query = "SELECT * FROM $questions_responses_table_name WHERE username='$username' and questionID='$questionID' AND classID='$classID'";
             echo "Check previous responses using query: $submitted_responses_query <br/>";
             
             $submitted_responses_resource = mysql_query($submitted_responses_query);
@@ -64,18 +70,17 @@
             if(is_resource($submitted_responses_resource) && mysql_num_rows($submitted_responses_resource) > 0 ){
                 /////////*remove previous response(s)*/
                 
-                mysql_query("DELETE FROM $questions_responses_table_name WHERE username='$username' and questionID='$questionID'") or die(mysql_error());
-                echo "Delete Previous Responses using: " . "DELETE FROM $questions_responses_table_name WHERE username='$username' and questionID='$questionID'" . "<br />";
+                mysql_query("DELETE FROM $questions_responses_table_name WHERE username='$username' AND questionID='$questionID' AND classID='$classID'") or die(mysql_error());
+                echo "Delete Previous Responses using: " . "DELETE FROM $questions_responses_table_name WHERE username='$username' AND questionID='$questionID'AND classID='$classID'" . "<br />";
                 
             }
             else{    
                 
             }
             
-            
-        mysql_query("INSERT INTO $questions_responses_table_name (questionID, username, response, responseNum) VALUES ('$questionID', '$username', '$response', '$responseNum')", $connection) or die(mysql_error());
-        echo "Create response row using: " . "INSERT INTO $questions_responses_table_name (questionID, username, response, responseNum) VALUES ('$questionID', '$username', '$response', '$responseNum')" . "<br />";
-        
+        $query = "INSERT INTO $questions_responses_table_name (questionID, classID, username, response, responseNum) VALUES ('$questionID', '$classID', '$username', '$response', '$responseNum')";   
+        mysql_query($query, $connection) or die(mysql_error());
+        echo "Inserting new response using query: $query <br />";        
         return $response_info;
         
     };
@@ -83,7 +88,7 @@
 
             ///****************** Run script ******************/// 
 
-
+    
 
     $response   = parse_and_add_response_request($connection, $questions_responses_table_name);
     

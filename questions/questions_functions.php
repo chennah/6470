@@ -59,6 +59,7 @@
         $create_questions_args_table_command = "CREATE TABLE $questions_args_table_name
                             (
                             questionID      INT,
+                            classID         INT,
                             argNum          INT,
                             arg             varchar(255),
                             )";
@@ -66,6 +67,7 @@
         $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_name
                    (
                    questionID       INT,
+                   classID          INT,
                    answerNum        INT,
                    answer           varchar(255),
                    correct          INT,
@@ -75,6 +77,7 @@
         $create_questions_responses_table_command = "CREATE TABLE $questions_responses_table_name
                    (
                    questionID       INT,
+                   classID          INT,
                    username         varchar(255),
                    response         varchar(255),
                    responseNum      INT
@@ -138,11 +141,11 @@
     
     
     function get_active_question_questionID($connection, $questions_table_name, $classID ){
+
         
-        //$mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name WHERE classID='$classID' ORDER BY activeNum ASC LIMIT 1";
- 
+        $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name WHERE classID='$classID' AND activeNum<>'0' ORDER BY activeNum ASC LIMIT 1";
+        //Treat activeNum questions as a Queue -- pop from lowest index. Inactive questions should be treated as activeNum=0
         
-        $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name WHERE classID='$classID' ORDER BY activeNum ASC LIMIT 1";
         
         $questionID_resource = mysql_query($mysql_find_questionID_query) or die(mysql_error());   
         $questionID = mysql_fetch_assoc($questionID_resource)[questionID];
@@ -151,16 +154,26 @@
         
     };
     
+    function set_question_inactive($connection, $questions_table_name, $classID, $questionID){
+        
+        $set_question_inactive_query = "UPDATE $questions_table_name SET activeNum='0' WHERE questionID='$questionID' AND classID='$classID'";
+        
+        mysql_query($set_question_inactive_query, $connection) or die(mysql_error());   
+        
+    };
+    
+    
+    
     function get_question_info($connection, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $classID, $questionID ){
         
-        $mysql_find_prompt_query = "SELECT prompt FROM $questions_table_name WHERE classID='$classID' AND questionID='$questionID'";
+        $mysql_find_prompt_query = "SELECT prompt FROM $questions_table_name WHERE questionID='$questionID' AND classID='$classID'";
         //echo         $mysql_find_prompt_query . '<br />';
         $prompt_resource = mysql_query($mysql_find_prompt_query, $connection) or die(mysql_error());
         $prompt= mysql_fetch_array($prompt_resource)['prompt'];
 
         echo "prompt (inside get_question_info): $prompt <br />";
         
-        $mysql_find_question_type_query = "SELECT questionType FROM $questions_table_name WHERE classID='$classID' AND questionID='$questionID'";
+        $mysql_find_question_type_query = "SELECT questionType FROM $questions_table_name WHERE questionID='$questionID' AND classID='$classID'";
         echo         $mysql_find_question_type_query . '<br />';
         $question_type_resource = mysql_query($mysql_find_question_type_query, $connection) or die(mysql_error());
         $question_type= mysql_fetch_array($question_type_resource)['questionType'];
@@ -168,7 +181,7 @@
         echo "questionType (inside get_question_info): $questionType <br />";
         
         //Parse answer information 
-        $mysql_find_answers_query = "SELECT * FROM $questions_answers_table_name WHERE questionID='$questionID' ";
+        $mysql_find_answers_query = "SELECT * FROM $questions_answers_table_name WHERE questionID='$questionID' AND classID='$classID'";
         echo         $mysql_find_answers_query . '<br />';
         $answers_resource = mysql_query($mysql_find_answers_query, $connection) or die(mysql_error());
         
@@ -186,7 +199,7 @@
         
         
         //Parse argument information 
-        $mysql_find_args_query = "SELECT * FROM $questions_args_table_name WHERE questionID='$questionID' ";
+        $mysql_find_args_query = "SELECT * FROM $questions_args_table_name WHERE questionID='$questionID' AND classID='$classID' ";
         echo         $mysql_find_args_query . '<br />';
         $args_resource = mysql_query($mysql_find_args_query, $connection) or die(mysql_error());
         
@@ -210,6 +223,77 @@
 
         
     }
+    
+    function page_loaded_when(){
+        // returns a string, formatted like: '28 Jan 2013 05:10:12 PM'
+        // See php strftime() documentation for more formats
+        $time_format = '%e %b %Y %r';
+        $time        = strftime($time_format);
+        
+        return $time;
+    };
+    
+    function get_responses($connection, $questions_responses_table_name, $classID, $questionID, $question_type){
+        
+        //echo "entering: get_responses <br />";
+        
+        $responses_array = array();
+                
+        $response_query = "SELECT * FROM $questions_responses_table_name WHERE classID='$classID' AND questionID='$questionID'";
+        $responses_result = mysql_query($response_query, $connection) or die(mysql_error());
+        //echo $response_query . '<br />';
+        
+        if($question_type ==='multiplechoice'){
+            //echo "Inside 'multiplechoice' block of get_responses <br />";
+            
+            while($row = mysql_fetch_array($responses_result))
+              {
+                //echo "Inside while-loop of get_responses (MC) <br />";
+                
+              $username  = $row['username'];
+              $response  = $row['responseNum'];
+              
+            
+            
+            $tmp_array = array('username'   => $username,
+                               'response'   => $response,
+                               );
+            
+            print_r($tmp_array);
+            
+            array_push($responses_array, $tmp_array); 
+                
+              }
+        }
+        elseif($question_type ==='freeresponse'){
+            
+            
+            while($row = mysql_fetch_array($responses_result))
+              {
+              $username  = $row['username'];
+              $response  = $row['response'];
+              
+            
+            
+            $tmp_array = array('username'   => $username,
+                               'response'   => $response,
+                               );
+            
+            print_r($tmp_array);
+            
+            array_push($responses_array, $tmp_array);
+              }
+            
+        }
+        
+        
+        
+        
+        
+        return $responses_array;
+    }
+    
+        /////******************* THESE FUNCTIONS RUN EVERY TIME *****************/////
     
     check_Question_Tables($connection, $database_name, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $questions_responses_table_name);
 

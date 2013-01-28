@@ -93,7 +93,6 @@
             
             mysql_query("DELETE FROM Logged_In_Cookies WHERE username='staticTest' and loginRand=1234") or die(mysql_error());
             mysql_query("INSERT INTO Logged_In_Cookies (username, loginRand) VALUES ('staticTest', 1234)", $connection) or die(mysql_error());
-    
         }
         
         
@@ -140,7 +139,7 @@
     function create_Logged_In_Cookie($username_raw, $connection){
             //echo 'Entering create_Logged_In_Cookie <br />';
             $username   = mysql_real_escape_string($username_raw);
-            $login_rand = 123456789; //rand();
+            $login_rand = rand();
             
             //echo "Username (inside 'create_Logged_In_Cookie'): $username <br />";
             //echo "login_rand (inside 'create_Logged_In_Cookie'): $login_rand <br />";
@@ -214,7 +213,25 @@
         
         return $current_User;
     };
-
+    
+    function get_current_classID(){
+        
+        $current_class = 0;
+        
+        if(isset($_GET['classID'])){
+            
+            $current_class = $_GET['classID'];
+            
+        }
+        else{
+            
+            $current_class = 1234; // default, esp for testing
+            
+        }
+        
+        return $current_class;
+    };
+    
     
     
     /////********************** VARIABLES ************/
