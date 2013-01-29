@@ -143,7 +143,7 @@
     
     create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name);
     
-    $redirect = FALSE;
+    $redirect = TRUE;
     
     if($redirect === TRUE){
         
