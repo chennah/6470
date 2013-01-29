@@ -66,8 +66,25 @@ background-color:E5E5E5;
 height:200px;
 width:300px;
 }
-input[type="text"] {
-	outline: none;
+input[type="password"]
+{
+outline:none;
+padding:500px;
+font-family:arial, helvetica, sans-serif;
+font-size:13px;
+color: #333;
+border: 1px solid #ddd;
+border-color:#838383;
+-webkit-border-radius:3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0px 0px 10px 0px #eee;
+	-moz-box-shadow: inset 0px 0px 10px 0px #eee;
+	box-shadow: inset 0px 0px 10px 0px #eee;
+}
+
+input[type="text"]
+{	outline: none;
 	padding: 500px;
 	
 	font-family:arial, helvetica, sans-serif;
@@ -94,6 +111,9 @@ width: 270px;
 }
 
 input[type="text"]:focus {
+	border-color: #0099E5;
+}
+input[type="password"]:focus {
 	border-color: #0099E5;
 }
 #signup{
@@ -144,10 +164,10 @@ input[type="text"]:focus {
 </div>
 <div class="login1">
 <div class="logintext">
-<form action='login/initial_login.php' method='post'>	
+<form action='initial_login.php' method='post'>	
 Login
-<input name="user" type="text" id="user" value="Username or Email" />
-<input name="password" type="text" id="password" value="Password" />
+<input name="user" type="text" id="user" onblur="if (this.value=='') this.value='Username'" onfocus="if(this.value=='Username')this.value=''" value="Username" />
+<input name="password" type="text" id="password" onfocus="this.type='password';if(this.value='Password')this.value=''" value="Password" />
 <input type='submit' id="login" value='Log in' />
 <!--<button type="button" id="login">Log in</button>-->
 <div style="color:white" id="LoginStatus"> </div>
@@ -157,11 +177,11 @@ Login
 <div class="login2">
 <div class="logintext">
 Register
-<form action='login/register_user.php' method='post'>
-<input name="myname" type="text" id="myname" value="Name" />
-<!-- <input name="myemail" type="text" id="myemail" value="Email" /> -->
-<input name="myusername" type="text" id="myusername" value="Username" />
-<input name="mypword" type="text" id="mypword" value="Password" />
+<form action='register_user.php' method='post'>
+<input name="myname" type="text" onfocus="this.value=''" id="myname" value="Name" onblur="if (this.value=='') this.value='Name'"/>
+<!-- <input name="myemail" type="text" id="myemail" onfocus="this.value=''" value="Email" /> -->
+<input name="myusername" type="text" id="myusername" onfocus="this.value=''" value="Username" onblur="if (this.value=='') this.value='Username'"/>
+<input name="mypword" type="text" id="mypword" onfocus="if (this.value=='Password') this.value=''; this.type='password'" value="Password" onblur="if (this.value=='') this.value=''"/>
 <input type="submit" id="signup" value="Sign Up" />
 <!-- <div style="color:white" id="RegistrationAttemptStatus"> </div>-->
 </form>

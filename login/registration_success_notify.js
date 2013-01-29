@@ -14,8 +14,8 @@ $(document).ready(function(){
     }
     else if($.cookie('Message_RegistrationSuccess') == 'UserCreated'){
        // alert('Entered the else if block');
-       
-        $('#RegistrationAttemptStatus').html(' <p> User Created: \'' + $.cookie('Message_RegistrationSuccess_User') + '\'  </p>');
+       var a = $.cookie('Status_Login_Username');
+        $('#headline1').html('Welcome '+a);
                
     }
 	
@@ -23,8 +23,3 @@ $(document).ready(function(){
         $.removeCookie('Message_RegistrationSuccess_User', {path: '/'});       
     
 });
-
-
-
-
-/**********************************************/
