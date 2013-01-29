@@ -1,10 +1,10 @@
 <html>
 <title>
-Home
+Add a class
 </title>
 <head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 <style type="text/css">
 #top{
 	left: 0px;
@@ -33,8 +33,6 @@ a:link,a:visited{
 	font-family:arial, helvetica, sans-serif;
 	color:#262626;
 	text-decoration:none;
-	font-size:90%;
-	line-height:1.5;
 }
 
 a:hover,a:active{
@@ -71,7 +69,7 @@ position: relative;
 #addclass{
 	border:1px solid #7d99ca; 
 	height: 50px;
-	width: 170px;
+	width: 300px;
 	-webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;
 	font-family:arial, helvetica, sans-serif; padding: 7px 10px 10px 10px; 
 	text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; 
@@ -87,62 +85,28 @@ font-size:60%;
 	position:center;
  }
 </style>
-<script src='jquery.cookie.js'></script>
-<script src='login_success_notify.js'></script>
-
 </head>
-<body onload="getClassList()" style="overflow-y:scroll">
+<body style="overflow-y:scroll">
 <div id ="top">
+This is where some stuff will go
 </div>
 <div class ="sidebar">
+This is where the nav stuff will go
 </div>
 <div class="main" overflow="hidden">
-<a href = "home.php">Home</a>
+<a href = "home.html">Home</a>
 </div>
 <div class = "headline">
-<div class = "headline1" id="headline1"></div>
+Add a class
 
 <div class = "addclass">
-<FORM METHOD="LINK" ACTION="newclass.html">
-<INPUT TYPE="submit" id ="addclass" VALUE="+ Add a class">
+<FORM METHOD="LINK" ACTION="findclass.html">
+<INPUT TYPE="submit" id ="addclass" VALUE="+ Join an existing class">
 </FORM>
-<div class="classList" id="classList">
-<?php
-	require_once 'login_HIDDEN.php';
-	$connection = mysql_connect($sql_server, $sql_username, $sql_password) or die(mysql_error());
-	mysql_select_db($login_database_name, $connection) or die(mysql_error());
-	$user = $_COOKIE['Status_Login_Username'];
-	$select_user_query = "SELECT classes FROM login WHERE username='$user'";
-	$result = mysql_query($select_user_query, $connection) or die(mysql_error());
-	$dat = mysql_fetch_array($result);
-	$thatdat = $dat[0];
-
-	mysql_close($connection);
-?>
-<script type="text/javascript">
-function getClassList(){
-if($.cookie('Status_Login_RAND') == null){
-        // alert('Entered the if block');
-        window.location = "index.html"
-                
-    }
-}
-</script>
-<script type="text/javascript">
-		var stuff = "<?php echo $thatdat; ?>";
-		var ar = stuff.split(";");
-		for(var i=0;i <ar.length;i++){
-			document.write("<a href='classhome.php'>"+ar[i]+"</a><br />");
-		}
-	$('#classList a').click(function(e) {
-  var txt = $(e.target).text();
-  $.cookie("class", txt, { path: '/' });
-
-  alert(txt);
-});	
-
-</script>
-</div>
+<FORM METHOD="LINK" ACTION="addclass.html">
+<INPUT TYPE="submit" id ="addclass" VALUE="+ Create a new class">
+</FORM>
+<div class="classList"></div>
 </div>
 
 
@@ -150,7 +114,4 @@ if($.cookie('Status_Login_RAND') == null){
 </body>
 </html>
 
-
-
-
-
+  
