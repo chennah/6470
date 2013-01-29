@@ -17,7 +17,7 @@ var DEFAULT_SETTINGS = {
     queryParam: "q",
     searchDelay: 300,
     minChars: 1,
-    propertyToSearch: "name",
+    propertyToSearch: "classname",
     jsonContainer: null,
 
 	// Display settings
@@ -28,12 +28,12 @@ var DEFAULT_SETTINGS = {
     animateDropdown: true,
 
 	// Tokenization settings
-    tokenLimit: null,
+    tokenLimit: 1,
     tokenDelimiter: ",",
     preventDuplicates: false,
 
 	// Output settings
-    tokenValue: "id",
+    tokenValue: "classname",
 
 	// Prepopulation settings
     prePopulate: null,
