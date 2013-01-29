@@ -3,9 +3,10 @@
 
 
     // Get the current class (default '1234' if not in get request)
-    require_once 'questions_functions.php';  
+    require_once 'questions_functions.php';
+    require_once 'questions_evaluate.php';
 
-    function get_html_form_responses($prompt, $arg_array, $answer_array, $answer_correct_array, $answer_label_array, $response_array, $question_type, $current_questionID){
+    function get_html_form_responses($prompt, $arg_array, $answer_array, $answer_correct_array, $answer_label_array, $response_array, $question_type, $questionID, $classID){
         $current_time       = page_loaded_when();
         
         
@@ -32,9 +33,65 @@
                
 EOF;
 
+    $answer_function_array  = array_fill(0, count($answer_array), 0);
+    $answer_numerical_array = array_fill(0, count($answer_array), 0);
+    $answer_responses_array = array_fill(0, count($answer_array)+1, 0);     //+1 for responses that aren't seen -- "other" category
+
+        //echo "<hr /> <br /> Get to start of if block? <hr /> <br />";
+        
+    if($question_type==='freeresponse'){
+            
+            for($i=0; $i < count($answer_array) ; $i++){
+                $expression = $answer_array[$i];
+                
+                $answer_function_array[$i]  = create_math_function($arg_array, $expression);
+                $answer_numerical_array[$i] = numerically_evaluate_function($answer_function_array[$i], $arg_array);
+                
+                
+            }
+            echo "past first for loop in array <br />";
+            
+            for($j = 0; $j < count($response_array); $j++){
+                    $response_row = $response_array[$j];
+                    $username_temp = $response_row['username'];
+                    $response_temp = $response_row['response'];
+                    
+                    echo "response_temp: $response_temp <br />";
+                    
+                    $temp_math      = create_math_function($arg_array, $response_temp);
+                    echo 'successfully created function <br />';
+                    $temp_numerical = numerically_evaluate_function($temp_math, $arg_array);
+                    
+                    echo "about to enter nested for loop in 'freeresponse section <br />";
+                    
+                    $answer_found = FALSE;
+                    
+                    for($i=0; $i < count($answer_array) ; $i++){
+                        
+                        $equal = check_numerical_solutions($answer_numerical_array[$i], $temp_numerical);
+                        
+                        if($equal){
+                            $answer_responses_array[$i] += 1;
+                            $answer_found = TRUE;
+                        };
+                        
+                        
+                    }
+                    if($answer_found === FALSE){
+                        $answer_responses_array[count($answer_array)] += 1;
+
+                    }
+                    echo "checked $j responses <br />";
+
+            }
+    };
+    
+    //echo "<hr /> <br /> Get past if block? <hr /> <br />";
+
+
         $Free_Response_Answers_list = "<table border='1'>
                                 <tr>
-                                    <th> Answer </th>   <th> Label </th>    <th> Correct? </th>
+                                    <th> Answer </th>   <th> Label </th>    <th> Correct? </th> <th> Number of Responses </th>
                                 </tr>";
                                 
             for($i=0; $i < count($answer_array) ; $i++){
@@ -43,11 +100,17 @@ EOF;
                 if($answer_correct_array[$i] == 1){
                     $correct = 'Correct';
                 }
+                                
             
-                $tmp = "<tr> <td>  $answer_array[$i] </td>  <td> $answer_label_array[$i]  </td>     <td> $correct </td>     </tr>";
+                $tmp = "<tr> <td>  $answer_array[$i] </td>  <td> $answer_label_array[$i]  </td>     <td> $correct </td>  <td> $answer_responses_array[$i] </td> </tr>";
                 $Free_Response_Answers_list .= $tmp;
                                 
             }
+            
+            $other = end($answer_responses_array);
+            $tmp = "<tr> <td>   </td>  <td> Other  </td>     <td>  </td>  <td> $other </td> </tr>";
+
+            $Free_Response_Answers_list .= $tmp;
          $Free_Response_Answers_list .= '</table>';   
         
         
@@ -74,6 +137,8 @@ EOF;
             $Free_Response_Answers_inner
         
 EOF;
+
+
         
         
         
@@ -100,7 +165,7 @@ EOF;
                 $MC_answers_frequency[$tmp_response] += 1;
                 $new_freq = $MC_answers_frequency[$tmp_response];
                 
-                echo "$tmp_response: $old_freq -> $new_freq <br />";
+                //echo "$tmp_response: $old_freq -> $new_freq <br />";
             
         }
         
@@ -188,6 +253,24 @@ EOF;
             }
          $responses_table .= '</table>';
          
+         
+             //**************** Button to make question no longer active ******************//
+             
+             
+        $make_question_inactive_button = <<< EOF
+        
+        <form action='question_no_longer_active.php' method='POST'>
+            
+            <input type='hidden' name='classID'    value='$classID' />
+            <input type='hidden' name='questionID' value='$questionID' />
+        
+            <input type='submit' value='Close Question from responses (also leaves this page)' />
+        
+        </form>
+        
+        
+EOF;
+         
         
         
         
@@ -225,6 +308,8 @@ EOF;
                 
                 $responses_table
                 
+                <h2> Close Question </h2>
+                $make_question_inactive_button
                 
             </body>
             
@@ -272,7 +357,7 @@ EOF;
     
     
     
-    $html = get_html_form_responses($prompt, $arg_array, $answer_array, $answer_correct_array, $answer_label_array, $response_array, $question_type, $current_questionID);
+    $html = get_html_form_responses($prompt, $arg_array, $answer_array, $answer_correct_array, $answer_label_array, $response_array, $question_type, $current_questionID, $current_classID);
     
     echo $html;
         
