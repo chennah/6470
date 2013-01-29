@@ -164,13 +164,13 @@ EOF;
     
     $current_questionID = get_active_question_questionID($connection, $questions_table_name, $current_classID);
 
-    echo "current_questionID: $current_questionID <br />";
+    //echo "current_questionID: $current_questionID <br />";
     
     $question_info = get_question_info($connection, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $current_classID, $current_questionID );
 
     $prompt                 = $question_info['prompt'];
     
-    echo "prompt in main: $prompt <br />";
+    //echo "prompt in main: $prompt <br />";
     $question_type          = $question_info['question_type'];
         
     $arg_array              = $question_info['arg_array'];
@@ -181,7 +181,7 @@ EOF;
     
     //print_r($answer_array);
     
-    print_r($question_info);
+    //print_r($question_info);
     
     $html = get_html_form($prompt, $arg_array, $answer_array, $question_type, $current_questionID);
     

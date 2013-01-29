@@ -1,5 +1,5 @@
 <?php
-    echo 'beginning login_functions file <br />';
+    //echo 'beginning login_functions file <br />';
     
     //if (is_file('login_HIDDEN.php'))
     //    {
@@ -30,7 +30,7 @@
     //      -login_database_name
     //      -login_table_name
     
-    echo "About to write functions for 'login_functions' <br />";
+    //echo "About to write functions for 'login_functions' <br />";
  
     //***************** Shared Functions ****************// 
     //
@@ -156,15 +156,15 @@
     };
     
     function check_Already_Logged_In($connection){
-        echo "entering: 'check_Already_Logged_In' <br />";
+        //echo "entering: 'check_Already_Logged_In' <br />";
         
         if($_COOKIE['Status_Login_RAND']==''){
-            echo "Status_Login_RAND does not exist in 'check_Already_Logged_In' <br />";
+            //echo "Status_Login_RAND does not exist in 'check_Already_Logged_In' <br />";
             remove_Logged_In_Cookie($connection);
             return FALSE;
         }
         else {
-            echo "Status_Login_RAND exists in 'check_Already_Logged_In' <br />";
+            //echo "Status_Login_RAND exists in 'check_Already_Logged_In' <br />";
 
             
             $login_Rand     = mysql_real_escape_string($_COOKIE['Status_Login_RAND']);
@@ -178,14 +178,14 @@
             //echo 'get passed the suspect query? <br />';
     
             if(is_resource($sql_result) && mysql_num_rows($sql_result) > 0 ){
-                echo 'Found match in table <br />';
+                //echo 'Found match in table <br />';
                 //logged in, with valid credentials
                 remove_Logged_In_Cookie($connection);
                 create_Logged_In_Cookie($username_raw, $connection);
                 return TRUE;
             }
             else{
-                echo 'Found no match in table <br />';
+                //echo 'Found no match in table <br />';
                 //Invalid cookie random number -- indicates potential client-side tampering
                 //Delete all valid cookies of that user -- but note: this might cause issues if user is logged in on multiple instances
                 

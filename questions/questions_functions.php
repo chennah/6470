@@ -9,18 +9,18 @@
     //        echo "'is file' did not work <br />";     
     //    }
     //
-    echo "About to require 'login_HIDDEN.php' <br />";
+    //echo "About to require 'login_HIDDEN.php' <br />";
     require_once './../login/login_HIDDEN.php';
     
-    echo "About to require 'questions_HIDDEN.php' <br />";
+    //echo "About to require 'questions_HIDDEN.php' <br />";
     require_once 'questions_HIDDEN.php';    //includes SQL login information
 
     
     
-    echo "About to require 'login_functions.php' <br />";
+    //echo "About to require 'login_functions.php' <br />";
     require_once '../login/login_functions.php';
     
-    echo "About to start writing functions for questions_functions.php <br />";
+    //echo "About to start writing functions for questions_functions.php <br />";
     
     //if (is_file('./../login/login_functions.php'))
     //    {
@@ -84,22 +84,22 @@
                    )"; 
                    
         
-        echo "Can I connect to the database? : $database_name <br /> ";
+        //echo "Can I connect to the database? : $database_name <br /> ";
         
         mysql_select_db($database_name, $connection) or die(mysql_error());
         
         //echo 'Database connection successful! <br />';    
           
-        echo "About to check if tables exist (check_Question_Tables) <br />";
+        //echo "About to check if tables exist (check_Question_Tables) <br />";
            
         $table_exist = mysql_query("SELECT 1 from $questions_table_name");
         if($table_exist !== FALSE)
         {
-            echo "Table: '$questions_table_name' already exists -- tried to CREATE<br />";  
+            //echo "Table: '$questions_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            echo "Table: '$questions_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            //echo "Table: '$questions_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_table_command, $connection) or die(mysql_error()); 
         }
         
@@ -107,33 +107,33 @@
         $table_exist = mysql_query("SELECT 1 from $questions_args_table_name");
         if($table_exist !== FALSE)
         {
-            echo "Table: '$questions_args_table_name' already exists -- tried to CREATE<br />";  
+            //echo "Table: '$questions_args_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            echo "Table: '$questions_args_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            //echo "Table: '$questions_args_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_args_table_command, $connection) or die(mysql_error()); 
         }
         
         $table_exist = mysql_query("SELECT 1 from $questions_answers_table_name");
         if($table_exist !== FALSE)
         {
-            echo "Table: '$questions_answers_table_name' already exists -- tried to CREATE<br />";  
+            //echo "Table: '$questions_answers_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            echo "Table: '$questions_answers_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            //echo "Table: '$questions_answers_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_answers_table_command, $connection) or die(mysql_error()); 
         }
         
         $table_exist = mysql_query("SELECT 1 from $questions_responses_table_name");
         if($table_exist !== FALSE)
         {
-            echo "Table: '$questions_responses_table_name' already exists -- tried to CREATE<br />";  
+            //echo "Table: '$questions_responses_table_name' already exists -- tried to CREATE<br />";  
         }
         else
         {
-            echo "Table: '$questions_responses_table_name'  DOES NOT exist -- tried to CREATE <br />";
+            //echo "Table: '$questions_responses_table_name'  DOES NOT exist -- tried to CREATE <br />";
             mysql_query($create_questions_responses_table_command, $connection) or die(mysql_error()); 
         }   
         
@@ -171,18 +171,18 @@
         $prompt_resource = mysql_query($mysql_find_prompt_query, $connection) or die(mysql_error());
         $prompt= mysql_fetch_array($prompt_resource)['prompt'];
 
-        echo "prompt (inside get_question_info): $prompt <br />";
+        //echo "prompt (inside get_question_info): $prompt <br />";
         
         $mysql_find_question_type_query = "SELECT questionType FROM $questions_table_name WHERE questionID='$questionID' AND classID='$classID'";
-        echo         $mysql_find_question_type_query . '<br />';
+        //echo         $mysql_find_question_type_query . '<br />';
         $question_type_resource = mysql_query($mysql_find_question_type_query, $connection) or die(mysql_error());
         $question_type= mysql_fetch_array($question_type_resource)['questionType'];
         
-        echo "questionType (inside get_question_info): $questionType <br />";
+        //echo "questionType (inside get_question_info): $questionType <br />";
         
         //Parse answer information 
         $mysql_find_answers_query = "SELECT * FROM $questions_answers_table_name WHERE questionID='$questionID' AND classID='$classID'";
-        echo         $mysql_find_answers_query . '<br />';
+        //echo         $mysql_find_answers_query . '<br />';
         $answers_resource = mysql_query($mysql_find_answers_query, $connection) or die(mysql_error());
         
         $answer_array = array();
@@ -200,7 +200,7 @@
         
         //Parse argument information 
         $mysql_find_args_query = "SELECT * FROM $questions_args_table_name WHERE questionID='$questionID' AND classID='$classID' ";
-        echo         $mysql_find_args_query . '<br />';
+        //echo         $mysql_find_args_query . '<br />';
         $args_resource = mysql_query($mysql_find_args_query, $connection) or die(mysql_error());
         
         $arg_array= array();
@@ -259,7 +259,7 @@
                                'response'   => $response,
                                );
             
-            print_r($tmp_array);
+            //print_r($tmp_array);
             
             array_push($responses_array, $tmp_array); 
                 
@@ -279,7 +279,7 @@
                                'response'   => $response,
                                );
             
-            print_r($tmp_array);
+            //print_r($tmp_array);
             
             array_push($responses_array, $tmp_array);
               }

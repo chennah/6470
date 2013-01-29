@@ -37,7 +37,7 @@ EOF;
     $answer_numerical_array = array_fill(0, count($answer_array), 0);
     $answer_responses_array = array_fill(0, count($answer_array)+1, 0);     //+1 for responses that aren't seen -- "other" category
 
-        //echo "<hr /> <br /> Get to start of if block? <hr /> <br />";
+        ////echo "<hr /> <br /> Get to start of if block? <hr /> <br />";
         
     if($question_type==='freeresponse'){
             
@@ -49,20 +49,20 @@ EOF;
                 
                 
             }
-            echo "past first for loop in array <br />";
+            //echo "past first for loop in array <br />";
             
             for($j = 0; $j < count($response_array); $j++){
                     $response_row = $response_array[$j];
                     $username_temp = $response_row['username'];
                     $response_temp = $response_row['response'];
                     
-                    echo "response_temp: $response_temp <br />";
+                    //echo "response_temp: $response_temp <br />";
                     
                     $temp_math      = create_math_function($arg_array, $response_temp);
-                    echo 'successfully created function <br />';
+                    //echo 'successfully created function <br />';
                     $temp_numerical = numerically_evaluate_function($temp_math, $arg_array);
                     
-                    echo "about to enter nested for loop in 'freeresponse section <br />";
+                    //echo "about to enter nested for loop in 'freeresponse section <br />";
                     
                     $answer_found = FALSE;
                     
@@ -81,7 +81,7 @@ EOF;
                         $answer_responses_array[count($answer_array)] += 1;
 
                     }
-                    echo "checked $j responses <br />";
+                    //echo "checked $j responses <br />";
 
             }
     };
@@ -155,7 +155,7 @@ EOF;
         }
         
         $num_responses = count($response_array);
-        echo "count(response_array): $num_responses <br />";
+        //echo "count(response_array): $num_responses <br />";
         for($i=0;  $i < $num_responses; $i++){
             
                 $tmp_row = $response_array[$i];
@@ -233,7 +233,7 @@ EOF;
                                     <th> Username </th>   <th> Answer Chosen </th>
                                 </tr>";
                                 
-                                echo 'entering response section <br />';
+                                //echo 'entering response section <br />';
                                 
             //$tmp_count = count($response_array);
             //echo 'count($response_array): ' . "$tmp_count <br />";
@@ -334,13 +334,13 @@ EOF;
     
     $current_questionID = get_active_question_questionID($connection, $questions_table_name, $current_classID);
 
-    echo "current_questionID: $current_questionID <br />";
+    //echo "current_questionID: $current_questionID <br />";
     
     $question_info = get_question_info($connection, $questions_table_name, $questions_args_table_name, $questions_answers_table_name, $current_classID, $current_questionID );
 
     $prompt                 = $question_info['prompt'];
     
-    echo "prompt in main: $prompt <br />";
+    //echo "prompt in main: $prompt <br />";
     $question_type          = $question_info['question_type'];
         
     $arg_array              = $question_info['arg_array'];
@@ -351,9 +351,9 @@ EOF;
     
     $response_array         = get_responses($connection, $questions_responses_table_name, $current_classID, $current_questionID, $question_type);
     
-    echo "'question_info: '"; print_r($question_info); echo "<br />";
+    //echo "'question_info: '"; print_r($question_info); echo "<br />";
     
-    echo "'response_array: '"; print_r($response_array); echo "<br />";
+    //echo "'response_array: '"; print_r($response_array); echo "<br />";
     
     
     

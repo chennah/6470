@@ -198,7 +198,7 @@
             
         }
         else{
-            echo "Lattice sizes do not match up! <br />";
+            //echo "Lattice sizes do not match up! <br />";
             return FALSE;       // lattices do not even appear to match sizes.
         }
         
@@ -224,7 +224,7 @@
             $value2 = get_arbitrary_dim_array_element($numerical_array2, $arg_array_numerical);
             
             if(!check_approx_equal_to($value1, $value2)){
-                echo " <hr /> <br /> Arrays do not appear to be equal. Values do not match: $value1 and $value2 <br /> <hr />";
+                //echo " <hr /> <br /> Arrays do not appear to be equal. Values do not match: $value1 and $value2 <br /> <hr />";
                 $keep_going = FALSE;
                 return FALSE;
             }

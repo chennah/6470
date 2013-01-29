@@ -1,15 +1,15 @@
 <?php
 // Use this page to add a new question to the database. Takes a "POST" request.
-    echo "About to include 'questions_functions.php' <br />";
+    //echo "About to include 'questions_functions.php' <br />";
     require_once 'questions_functions.php';
-    echo "About to write functions of 'add_new_question.php' <br />";
+    //echo "About to write functions of 'add_new_question.php' <br />";
 
     function create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name){
        // //requires POST request
-       echo "Entering 'create_question' function <br />";
+       //echo "Entering 'create_question' function <br />";
        
         
-       $current_User  = get_current_username($connection)       // default: ''
+       $current_User  = get_current_username($connection);       // default: ''
        $current_Class = get_current_classID();                  // default: 1234
         
        
@@ -21,14 +21,14 @@
         $mysql_find_questionID_query = "SELECT questionID FROM $questions_table_name ORDER BY questionID DESC LIMIT 1";
         $old_questionID_resource = mysql_query($mysql_find_questionID_query) or die(mysql_error());
         $old_questionID = mysql_fetch_assoc($old_questionID_resource)[questionID];
-        echo "old_questionID: $old_questionID <br />";
+        //echo "old_questionID: $old_questionID <br />";
         $questionID = $old_questionID + 1;
-        echo "new questionID: $questionID <br />";        
+        //echo "new questionID: $questionID <br />";        
         
         $mysql_find_activeNum_query = "SELECT activeNum FROM $questions_table_name ORDER BY activeNum DESC LIMIT 1";
         $old_activeNum_resource = mysql_query($mysql_find_activeNum_query) or die(mysql_error());
         $old_activeNum = mysql_fetch_assoc($old_activeNum_resource)[activeNum];
-        echo "old_activeNum: $old_activeNum <br />";
+        //echo "old_activeNum: $old_activeNum <br />";
         //$activeNum = $old_activeNum + 1;
         $activeNum = 0;         //for inactive questions
         
@@ -46,15 +46,15 @@
         $answer_correct_array   = $question_request['answer_correct_array'];
         $answer_label_array     = $question_request['answer_label_array'];
         
-        echo "Prompt: $prompt <br />";
-        echo "question_type: $question_type <br />";
+        //echo "Prompt: $prompt <br />";
+        //echo "question_type: $question_type <br />";
         //echo "Prompt: $prompt <br />";
         
         
           //create question in $questions_table_name
         mysql_query("INSERT INTO $questions_table_name (questionID, classID, prompt, questionType, activeNum) VALUES ('$questionID', '$current_Class', '$prompt', '$question_type', '$activeNum')", $connection) or die(mysql_error());
        
-       echo "Count of 'arg_array in check_Questions_Table: " . count($arg_array) . '<br />'; 
+       //echo "Count of 'arg_array in check_Questions_Table: " . count($arg_array) . '<br />'; 
         
         for($i = 0; $i < count($arg_array); $i++){
               
@@ -62,7 +62,7 @@
                 
         }
         
-        echo "Count of 'answer_array in check_Questions_Table: " . count($answer_array) . '<br />'; 
+        //echo "Count of 'answer_array in check_Questions_Table: " . count($answer_array) . '<br />'; 
 
         for($i = 0; $i < count($answer_array); $i++){
               
@@ -76,7 +76,7 @@
     function parse_question_request($Question_ID, $questions_args_table_name, $connection){
         //Anticipates POST request of arbitrary number of Arguments.
         
-        echo "entering 'parse_question_request' <br />";
+        //echo "entering 'parse_question_request' <br />";
         
         $arg_array              = array();
         
@@ -89,25 +89,25 @@
         //echo "Test arg2:" . $_POST["Arg2"] .  "<br />";
         
         for( $i = 0; isset($_POST['Arg' . ($i)]); $i++) {
-            echo "Entering the Arg for-loop in 'parse_question_request' <br />";
-            echo 'Arg'          . $i . ' <br />';
+            //echo "Entering the Arg for-loop in 'parse_question_request' <br />";
+            //echo 'Arg'          . $i . ' <br />';
         
             $arg                = $_POST['Arg'          . $i];
-            echo "Arg: $arg <br />";
+            //echo "Arg: $arg <br />";
         
             array_push($arg_array,           $arg);
         }
         
         for( $i = 0; isset($_POST['Answer' . ($i)]); $i++) {
-            echo "Entering the Answer for-loop in 'parse_question_request' <br />";
-            echo 'Answer'          . $i . ' <br />';
+            //echo "Entering the Answer for-loop in 'parse_question_request' <br />";
+            //echo 'Answer'          . $i . ' <br />';
         
             $answer                = $_POST['Answer'          . $i];
-            echo "Answer: $answer <br />";
+            //echo "Answer: $answer <br />";
             
             $answer             = $_POST['Answer'          . $i];            
             $answer_correct     = $_POST['Answer_Correct'  . $i];
-            echo "Answer_correct value: $answer_correct <br />";
+            //echo "Answer_correct value: $answer_correct <br />";
             $answer_label       = $_POST['Answer_Label'    . $i];
         
             array_push($answer_array,           $answer);
@@ -136,11 +136,11 @@
     
     ///*******************************Now run code*********************************/
     
-    echo "About to start main function of 'add_new_question.php' <br />";
+    //echo "About to start main function of 'add_new_question.php' <br />";
     
     create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name);
     
-    $redirect = FALSE;
+    $redirect = TRUE;
     
     if($redirect === TRUE){
         
