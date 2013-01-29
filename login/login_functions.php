@@ -91,8 +91,8 @@
             //echo "Table: 'Logged_In_Cookies'  DOES NOT exist -- trying to CREATE now<br />";
             mysql_query($create_logged_in_cookies_command, $connection);// or die(mysql_error());
             
-            mysql_query("DELETE FROM Logged_In_Cookies WHERE username='staticTest' and loginRand=1234") or die(mysql_error());
-            mysql_query("INSERT INTO Logged_In_Cookies (username, loginRand) VALUES ('staticTest', 1234)", $connection) or die(mysql_error());
+            mysql_query("DELETE FROM Logged_In_Cookies WHERE username='staticTest' and loginRand='1234'") or die(mysql_error());
+            mysql_query("INSERT INTO Logged_In_Cookies (username, loginRand) VALUES ('staticTest', '1234')", $connection) or die(mysql_error());
         }
         
         
@@ -225,7 +225,7 @@
         }
         else{
             
-            $current_class = 1234; // default, esp for testing
+            $current_class = '1234'; // default, esp for testing
             
         }
         

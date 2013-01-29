@@ -49,7 +49,7 @@
         $create_questions_table_command = "CREATE TABLE $questions_table_name
                             (
                             questionID      INT,
-                            classID         INT,
+                            classID         varchar(255),
                             prompt          varchar(1000),
                             questionType    varchar(100),
                             activeNum       INT
@@ -59,7 +59,7 @@
         $create_questions_args_table_command = "CREATE TABLE $questions_args_table_name
                             (
                             questionID      INT,
-                            classID         INT,
+                            classID         varchar(255),
                             argNum          INT,
                             arg             varchar(255),
                             )";
@@ -67,7 +67,7 @@
         $create_questions_answers_table_command = "CREATE TABLE $questions_answers_table_name
                    (
                    questionID       INT,
-                   classID          INT,
+                   classID          varchar(255),
                    answerNum        INT,
                    answer           varchar(255),
                    correct          INT,
@@ -77,7 +77,7 @@
         $create_questions_responses_table_command = "CREATE TABLE $questions_responses_table_name
                    (
                    questionID       INT,
-                   classID          INT,
+                   classID          varchar(255),
                    username         varchar(255),
                    response         varchar(255),
                    responseNum      INT

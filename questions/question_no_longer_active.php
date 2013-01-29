@@ -9,7 +9,7 @@
         $classID = $_POST['classID'];
     }
     else{
-        $classID = 1234;
+        $classID = '1234';
     }
     
     
