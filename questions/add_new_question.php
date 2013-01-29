@@ -29,18 +29,18 @@
         $old_activeNum_resource = mysql_query($mysql_find_activeNum_query) or die(mysql_error());
         $old_activeNum = mysql_fetch_assoc($old_activeNum_resource)[activeNum];
         //echo "old_activeNum: $old_activeNum <br />";
-        //$activeNum = $old_activeNum + 1;
-        $activeNum = 0;         //for inactive questions
+        $activeNum = $old_activeNum + 1;
+        //$activeNum = 0;         //for inactive questions
         
         
         
         
         $question_request = parse_question_request($questionID, $questions_args_table_name, $connection);
         
-        $prompt                 = $question_request['prompt'];
-        $question_type          = $question_request['question_type'];
+        $prompt                 = mysql_real_escape_string($question_request['prompt']);
+        $question_type          = mysql_real_escape_string($question_request['question_type']);
             
-        $arg_array              = $question_request['arg_array'];
+        $arg_array              = mysql_real_escape_string($question_request['arg_array']);
 
         $answer_array           = $question_request['answer_array'];
         $answer_correct_array   = $question_request['answer_correct_array'];
@@ -58,7 +58,8 @@
         
         for($i = 0; $i < count($arg_array); $i++){
               
-                mysql_query("INSERT INTO $questions_args_table_name (questionID, classID, argNum, arg) VALUES ('$questionID', '$current_Class', '$i', '$arg_array[$i]')", $connection) or die(mysql_error());
+                $tmpArg = mysql_real_escape_string($arg_array[$i]);
+                mysql_query("INSERT INTO $questions_args_table_name (questionID, classID, argNum, arg) VALUES ('$questionID', '$current_Class', '$i', '$tmpArg')", $connection) or die(mysql_error());
                 
         }
         
@@ -66,8 +67,10 @@
 
         for($i = 0; $i < count($answer_array); $i++){
               
-                mysql_query("INSERT INTO $questions_answers_table_name (questionID, classID, answerNum, answer, correct, label) VALUES ('$questionID', '$current_Class', '$i', '$answer_array[$i]', '$answer_correct_array[$i]', '$answer_label_array[$i]')", $connection) or die(mysql_error());
-                
+                $tmpAnswer = mysql_real_escape_string($answer_array[$i]);
+                $tmpLabel = mysql_real_escape_string($answer_label_array[$i]);
+                mysql_query("INSERT INTO $questions_answers_table_name (questionID, classID, answerNum, answer, correct, label) VALUES ('$questionID', '$current_Class', '$i', '$tmpAnswer', '$answer_correct_array[$i]', '$tmpLabel')", $connection) or die(mysql_error());
+                echo "INSERT INTO $questions_answers_table_name (questionID, classID, answerNum, answer, correct, label) VALUES ('$questionID', '$current_Class', '$i', '$answer_array[$i]', '$answer_correct_array[$i]', '$answer_label_array[$i]')";
         }
         
         
@@ -140,7 +143,7 @@
     
     create_question($connection, $database_name, $questions_args_table_name, $questions_table_name, $questions_answers_table_name);
     
-    $redirect = TRUE;
+    $redirect = FALSE;
     
     if($redirect === TRUE){
         
